@@ -2,34 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  final int currentIndex;
+  final void Function(int?) changePage;
+
+  const BottomNavBar({
+    Key? key,
+    required this.currentIndex,
+    required this.changePage,
+  }) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  late int _currentIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentIndex = 0;
-  }
-
-  void _changePage(int? index) {
-    setState(() {
-      _currentIndex = index!;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return BubbleBottomBar(
       hasNotch: true,
       opacity: 1,
-      currentIndex: _currentIndex,
-      onTap: _changePage,
+      currentIndex: widget.currentIndex,
+      onTap: widget.changePage,
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(16),
       ),
@@ -64,8 +57,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
             Icons.show_chart,
             color: Theme.of(context).highlightColor,
           ),
-          title: Text("Graphs",
-              style: TextStyle(color: Theme.of(context).highlightColor)),
+          title: Text(
+            "Graphs",
+            style: TextStyle(color: Theme.of(context).highlightColor),
+          ),
         ),
         BubbleBottomBarItem(
           backgroundColor: Theme.of(context).primaryColor,
