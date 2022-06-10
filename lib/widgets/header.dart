@@ -11,11 +11,12 @@ class Header extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const Text(
               'MyGymBro',
               style: TextStyle(
-                fontSize: 30.0,
+                fontSize: 40.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
