@@ -16,9 +16,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'MyGymBro',
-      home: MyGymBroApp(),
+      theme: ThemeData(
+        primaryColor: Colors.blueAccent,
+        highlightColor: Colors.white,
+      ),
+      home: const MyGymBroApp(),
     );
   }
 }
@@ -35,7 +39,7 @@ class MyGymBroApp extends StatelessWidget {
           Header(),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: const BottomNavBar(),
     );
   }
 }

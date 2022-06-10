@@ -37,46 +37,50 @@ class _BottomNavBarState extends State<BottomNavBar> {
       tilesPadding: const EdgeInsets.symmetric(
         vertical: 8.0,
       ),
-      backgroundColor: Colors.white,
-      items: const <BubbleBottomBarItem>[
+      backgroundColor: Theme.of(context).highlightColor,
+      items: <BubbleBottomBarItem>[
         BubbleBottomBarItem(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Theme.of(context).primaryColor,
           icon: Icon(
             Icons.fitness_center,
-            color: Colors.blueAccent,
+            color: Theme.of(context).primaryColor,
           ),
           activeIcon: Icon(
             Icons.fitness_center,
-            color: Colors.white,
+            color: Theme.of(context).highlightColor,
           ),
           title: Text(
             "Train",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),
         BubbleBottomBarItem(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Theme.of(context).primaryColor,
           icon: Icon(
             Icons.show_chart,
-            color: Colors.blueAccent,
+            color: Theme.of(context).primaryColor,
           ),
           activeIcon: Icon(
             Icons.show_chart,
-            color: Colors.white,
+            color: Theme.of(context).highlightColor,
           ),
-          title: Text("Graphs", style: TextStyle(color: Colors.white)),
+          title: Text("Graphs",
+              style: TextStyle(color: Theme.of(context).highlightColor)),
         ),
         BubbleBottomBarItem(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: Theme.of(context).primaryColor,
           icon: Icon(
             Icons.settings,
-            color: Colors.blueAccent,
+            color: Theme.of(context).primaryColor,
           ),
           activeIcon: Icon(
             Icons.settings,
-            color: Colors.white,
+            color: Theme.of(context).highlightColor,
           ),
-          title: Text("Settings", style: TextStyle(color: Colors.white)),
+          title: Text(
+            "Settings",
+            style: TextStyle(color: Theme.of(context).highlightColor),
+          ),
         )
       ],
     );
