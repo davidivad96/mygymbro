@@ -1,4 +1,7 @@
 {
+  "train": "Entrenamiento",
+  "graphs": "Gráficos",
+  "settings": "Ajustes",
   "language": "Lenguaje",
   "spanish": "Español",
   "english": "Inglés"

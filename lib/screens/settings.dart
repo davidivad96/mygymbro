@@ -27,9 +27,9 @@ class _SettingsState extends State<Settings> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'Settings',
-              style: TextStyle(
+            Text(
+              getTranslated(context, "settings"),
+              style: const TextStyle(
                 fontSize: 25.0,
                 fontWeight: FontWeight.bold,
               ),

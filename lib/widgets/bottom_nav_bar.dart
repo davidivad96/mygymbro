@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 
+import 'package:mygymbro/utils/localization.dart';
+
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
   final void Function(int?) changePage;
@@ -43,7 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            "Train",
+            getTranslated(context, "train"),
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),
@@ -58,7 +60,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            "Graphs",
+            getTranslated(context, "graphs"),
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),
@@ -73,7 +75,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            "Settings",
+            getTranslated(context, "settings"),
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         )
