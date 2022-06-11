@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/main.dart';
 import 'package:mygymbro/models/language.dart';
-import 'package:mygymbro/screens/train.dart';
+import 'package:mygymbro/screens/training.dart';
 import 'package:mygymbro/screens/graphs.dart';
 import 'package:mygymbro/screens/settings.dart';
 import 'package:mygymbro/utils/localization.dart';
@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget getScreen() {
-    if (_currentIndex == 0) return const Train();
+    if (_currentIndex == 0) return const Training();
     if (_currentIndex == 1) return const Graphs();
     if (_currentIndex == 2) {
       return Settings(
@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
         changeLanguage: _changeLanguage,
       );
     }
-    return const Train();
+    return const Training();
   }
 
   void _changePage(int? index) {
