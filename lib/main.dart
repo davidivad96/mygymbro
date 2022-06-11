@@ -3,20 +3,35 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'package:mygymbro/screens/train.dart';
-import 'package:mygymbro/screens/graphs.dart';
-import 'package:mygymbro/screens/settings.dart';
-
-import 'package:mygymbro/widgets/header.dart';
-import 'package:mygymbro/widgets/bottom_nav_bar.dart';
+import 'package:mygymbro/home.dart';
+import 'package:mygymbro/localization/app_localization.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  static void setLocale(BuildContext context, Locale locale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(locale);
+  }
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale("es");
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,53 +42,27 @@ class MyApp extends StatelessWidget {
         highlightColor: Colors.white,
         fontFamily: "OpenSans",
       ),
-      home: const MyGymBroApp(),
-    );
-  }
-}
-
-class MyGymBroApp extends StatefulWidget {
-  const MyGymBroApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyGymBroApp> createState() => _MyGymBroAppState();
-}
-
-class _MyGymBroAppState extends State<MyGymBroApp> {
-  late int _currentIndex = 0;
-
-  static const List<Widget> screens = <Widget>[
-    Train(),
-    Graphs(),
-    Settings(),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _currentIndex = 0;
-  }
-
-  void _changePage(int? index) {
-    setState(() {
-      _currentIndex = index!;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          const Header(),
-          screens.elementAt(_currentIndex),
-        ],
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        changePage: _changePage,
-      ),
+      home: const Home(),
+      locale: _locale,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        AppLocalization.delegate,
+      ],
+      localeResolutionCallback: (deviceLocale, supportedLocales) {
+        for (var locale in supportedLocales) {
+          if (deviceLocale != null &&
+              locale.languageCode == deviceLocale.languageCode) {
+            return deviceLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     );
   }
 }

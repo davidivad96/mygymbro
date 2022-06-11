@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/main.dart';
+import 'package:mygymbro/utils.dart';
+
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
 
@@ -31,9 +34,9 @@ class _SettingsState extends State<Settings> {
               children: <Widget>[
                 Container(
                   margin: const EdgeInsets.only(right: 15.0),
-                  child: const Text(
-                    "Language: ",
-                    style: TextStyle(fontSize: 15.0),
+                  child: Text(
+                    "${getTranslated(context, "language")}:",
+                    style: const TextStyle(fontSize: 15.0),
                   ),
                 ),
                 DropdownButton(
@@ -48,6 +51,7 @@ class _SettingsState extends State<Settings> {
                   onChanged: (String? value) {
                     setState(() {
                       language = value!;
+                      MyApp.setLocale(context, mapLanguageToLocale(value));
                     });
                   },
                 )
