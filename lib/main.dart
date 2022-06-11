@@ -7,6 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:mygymbro/home.dart';
 import 'package:mygymbro/localization/app_localization.dart';
+import 'package:mygymbro/models/language.dart';
+import 'package:mygymbro/utils/localization.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,7 @@ void main() {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  static void setLocale(BuildContext context, Locale locale) {
+  static void setLocale(BuildContext context, String locale) {
     _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     state!.setLocale(locale);
   }
@@ -25,16 +27,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale("es");
+  Locale? _locale;
 
-  void setLocale(Locale locale) {
+  void setLocale(String locale) {
     setState(() {
-      _locale = locale;
+      _locale = Locale(locale);
     });
   }
 
   @override
+  void didChangeDependencies() {
+    getLocale().then((locale) {
+      setLocale(locale);
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_locale == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return MaterialApp(
       title: 'MyGymBro',
       theme: ThemeData(
@@ -44,10 +59,8 @@ class _MyAppState extends State<MyApp> {
       ),
       home: const Home(),
       locale: _locale,
-      supportedLocales: const [
-        Locale('en'),
-        Locale('es'),
-      ],
+      supportedLocales:
+          Language.languageList.map((element) => Locale(element.code)).toList(),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

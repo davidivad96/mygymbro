@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
-import 'package:mygymbro/main.dart';
-import 'package:mygymbro/utils.dart';
+import 'package:mygymbro/utils/localization.dart';
+import 'package:mygymbro/models/language.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+  final Language language;
+  final void Function(String locale) changeLanguage;
+
+  const Settings({
+    Key? key,
+    required this.language,
+    required this.changeLanguage,
+  }) : super(key: key);
 
   @override
   State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
-  String language = "Spanish";
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,22 +44,18 @@ class _SettingsState extends State<Settings> {
                     style: const TextStyle(fontSize: 15.0),
                   ),
                 ),
-                DropdownButton(
-                  value: language,
-                  items: <String>["Spanish", "English"]
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
+                DropdownButton<Language>(
+                  value: widget.language,
+                  items: Language.languageList.map((Language language) {
+                    return DropdownMenuItem<Language>(
+                      value: language,
+                      child: Text(getTranslated(context, language.name)),
                     );
                   }).toList(),
-                  onChanged: (String? value) {
-                    setState(() {
-                      language = value!;
-                      MyApp.setLocale(context, mapLanguageToLocale(value));
-                    });
+                  onChanged: (Language? value) {
+                    widget.changeLanguage(value!.code);
                   },
-                )
+                ),
               ],
             )
           ],
