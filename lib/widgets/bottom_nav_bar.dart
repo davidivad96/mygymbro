@@ -52,6 +52,21 @@ class _BottomNavBarState extends State<BottomNavBar> {
         BubbleBottomBarItem(
           backgroundColor: Theme.of(context).primaryColor,
           icon: Icon(
+            Icons.list,
+            color: Theme.of(context).primaryColor,
+          ),
+          activeIcon: Icon(
+            Icons.list,
+            color: Theme.of(context).highlightColor,
+          ),
+          title: Text(
+            getTranslated(context, "exercises"),
+            style: TextStyle(color: Theme.of(context).highlightColor),
+          ),
+        ),
+        BubbleBottomBarItem(
+          backgroundColor: Theme.of(context).primaryColor,
+          icon: Icon(
             Icons.show_chart,
             color: Theme.of(context).primaryColor,
           ),

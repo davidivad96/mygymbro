@@ -31,63 +31,26 @@ class Training extends StatelessWidget {
                 childAspectRatio: 1.0,
               ),
               scrollDirection: Axis.vertical,
-              children: [
-                const Card(
-                  color: Color(0xFFFF0000),
+              children: const [
+                Card(
+                  color: Colors.blue,
+                  child: Center(child: Text("Workout 1")),
                 ),
                 Card(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.red,
+                  child: Center(child: Text("Workout 2")),
                 ),
                 Card(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.green,
+                  child: Center(child: Text("Workout 3")),
                 ),
                 Card(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.orange,
+                  child: Center(child: Text("Workout 4")),
                 ),
                 Card(
-                  color: const Color(0xFFF5F5F5),
-                  child: Image.network(
-                    'https://picsum.photos/seed/229/600',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Card(
-                  color: const Color(0xFFF5F5F5),
-                  child: Image.network(
-                    'https://picsum.photos/seed/229/600',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Card(
-                  color: const Color(0xFFF5F5F5),
-                  child: Image.network(
-                    'https://picsum.photos/seed/229/600',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Card(
-                  color: const Color(0xFFF5F5F5),
-                  child: Image.network(
-                    'https://picsum.photos/seed/229/600',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Card(
-                  color: const Color(0xFFF5F5F5),
-                  child: Image.network(
-                    'https://picsum.photos/seed/229/600',
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
+                  color: Color(0xFFF5F5F5),
+                  child: Icon(Icons.add, size: 35.0),
                 ),
               ],
             ),
