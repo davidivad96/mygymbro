@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import 'package:mygymbro/main.dart';
-import 'package:mygymbro/screens/languages_screen.dart';
+import 'package:mygymbro/screens/languages.dart';
 import 'package:mygymbro/utils/localization.dart';
 import 'package:mygymbro/models/language.dart';
 
@@ -72,7 +72,7 @@ class _SettingsState extends State<Settings> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => LanguagesScreen(
+                          builder: (_) => Languages(
                             language: _language,
                             changeLanguage: _changeLanguage,
                           ),

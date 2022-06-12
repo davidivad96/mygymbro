@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/screens/profile.dart';
+
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key})
       : preferredSize = const Size.fromHeight(kToolbarHeight),
@@ -31,8 +33,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
           ),
-          child: Image.asset(
-            "assets/images/default_avatar.jpeg",
+          child: GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => const Profile(),
+                isScrollControlled: true,
+              );
+            },
+            child: Image.asset(
+              "assets/images/default_avatar.jpeg",
+            ),
           ),
         ),
       ],

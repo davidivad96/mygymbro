@@ -5,21 +5,21 @@ import 'package:mygymbro/models/language.dart';
 import 'package:mygymbro/widgets/custom_app_bar.dart';
 import 'package:mygymbro/utils/localization.dart';
 
-class LanguagesScreen extends StatefulWidget {
+class Languages extends StatefulWidget {
   final Language language;
   final void Function(String locale) changeLanguage;
 
-  const LanguagesScreen({
+  const Languages({
     Key? key,
     required this.language,
     required this.changeLanguage,
   }) : super(key: key);
 
   @override
-  State<LanguagesScreen> createState() => _LanguagesScreenState();
+  State<Languages> createState() => _LanguagesState();
 }
 
-class _LanguagesScreenState extends State<LanguagesScreen> {
+class _LanguagesState extends State<Languages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
