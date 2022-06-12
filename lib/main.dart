@@ -55,7 +55,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.blueAccent,
         highlightColor: Colors.white,
-        fontFamily: "OpenSans",
+        backgroundColor: Colors.grey[200],
+        fontFamily: "Poppins",
       ),
       home: const Home(),
       locale: _locale,
