@@ -43,9 +43,7 @@ class _HomeState extends State<Home> {
       appBar: const CustomAppBar(),
       body: Container(
         color: Theme.of(context).backgroundColor,
-        child: SafeArea(
-          child: getScreen(),
-        ),
+        child: getScreen(),
       ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,

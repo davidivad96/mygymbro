@@ -24,28 +24,50 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: SettingsList(
-        lightTheme: SettingsThemeData(
-          settingsListBackground: Theme.of(context).backgroundColor,
+      body: Container(
+        color: Theme.of(context).backgroundColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 20.0,
+              ),
+              child: Text(
+                getTranslated(context, "language"),
+                style: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: SettingsList(
+                lightTheme: SettingsThemeData(
+                  settingsListBackground: Theme.of(context).backgroundColor,
+                ),
+                sections: [
+                  SettingsSection(
+                    tiles: Language.languageList.map((Language language) {
+                      return SettingsTile(
+                        title: Text(getTranslated(context, language.name)),
+                        trailing: language.code == widget.language.code
+                            ? Icon(
+                                Icons.check,
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : null,
+                        onPressed: (BuildContext context) {
+                          widget.changeLanguage(language.code);
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        sections: [
-          SettingsSection(
-            tiles: Language.languageList.map((Language language) {
-              return SettingsTile(
-                title: Text(getTranslated(context, language.name)),
-                trailing: language.code == widget.language.code
-                    ? Icon(
-                        Icons.check,
-                        color: Theme.of(context).primaryColor,
-                      )
-                    : null,
-                onPressed: (BuildContext context) {
-                  widget.changeLanguage(language.code);
-                },
-              );
-            }).toList(),
-          ),
-        ],
       ),
     );
   }
