@@ -45,7 +45,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            getTranslated(context, "training"),
+            getTranslated(context, "workout"),
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),

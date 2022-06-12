@@ -19,7 +19,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: const Text(
         "MyGymBro",
         style: TextStyle(
-          fontSize: 22.0,
+          fontSize: 30.0,
           fontWeight: FontWeight.bold,
         ),
       ),

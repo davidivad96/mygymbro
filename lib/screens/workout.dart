@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/utils/localization.dart';
 
-class Training extends StatelessWidget {
-  const Training({Key? key}) : super(key: key);
+class Workout extends StatelessWidget {
+  const Workout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +15,9 @@ class Training extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            getTranslated(context, 'training'),
+            getTranslated(context, 'workout'),
             style: const TextStyle(
-              fontSize: 30.0,
+              fontSize: 25.0,
               fontWeight: FontWeight.bold,
             ),
           ),

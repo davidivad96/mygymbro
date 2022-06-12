@@ -48,7 +48,7 @@ class _SettingsState extends State<Settings> {
           child: Text(
             getTranslated(context, "settings"),
             style: const TextStyle(
-              fontSize: 30.0,
+              fontSize: 25.0,
               fontWeight: FontWeight.bold,
             ),
           ),

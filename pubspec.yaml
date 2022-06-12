@@ -38,6 +38,8 @@ dependencies:
   bubble_bottom_bar: ^2.0.0
   shared_preferences: ^2.0.15
   settings_ui: ^2.0.2
+  alphabet_list_scroll_view: ^2.0.0
+  syncfusion_flutter_charts: ^20.1.59
 
 dev_dependencies:
   flutter_test:
