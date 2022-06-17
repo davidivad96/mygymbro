@@ -27,7 +27,9 @@ class _ExercisesState extends State<Exercises> {
   @override
   void dispose() {
     _controller.dispose();
-    widget.onSearchChanged("");
+    Future.delayed(Duration.zero, () {
+      widget.onSearchChanged("");
+    });
     super.dispose();
   }
 
