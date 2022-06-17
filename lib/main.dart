@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/home.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyGymBro',
+      title: GeneralConstants.appName,
       theme: ThemeData(
         primaryColor: Colors.blueAccent,
         highlightColor: Colors.white,

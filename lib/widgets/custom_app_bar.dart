@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/screens/profile.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -19,7 +20,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text(
-        "MyGymBro",
+        GeneralConstants.appName,
         style: TextStyle(
           fontSize: 30.0,
           fontWeight: FontWeight.bold,

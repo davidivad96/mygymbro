@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/constants.dart';
+
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -52,7 +54,7 @@ class Profile extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 20.0),
                   child: ElevatedButton(
                     child: const Text(
-                      "Edit Profile",
+                      ProfileConstants.editProfile,
                     ),
                     onPressed: () {},
                   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/constants.dart';
+
 class Workout extends StatelessWidget {
   const Workout({Key? key}) : super(key: key);
 
@@ -13,7 +15,7 @@ class Workout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            "Workout",
+            WorkoutConstants.title,
             style: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.bold,

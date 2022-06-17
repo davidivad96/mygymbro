@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/exercise.dart';
 
@@ -15,7 +16,7 @@ class _ExercisesState extends State<Exercises> {
   late List<Exercise> _exerciseList = [];
   late List<Exercise> _filteredExerciseList = [];
   late List<Exercise> _finalExerciseList = [];
-  late String _targetArea = "Any target";
+  late String _targetArea = ExercisesConstants.anyTarget;
 
   _setTargetArea(String area) {
     setState(() {
@@ -24,7 +25,7 @@ class _ExercisesState extends State<Exercises> {
           .where(
             (Exercise exercise) =>
                 exercise.targetArea == _targetArea ||
-                _targetArea == "Any target",
+                _targetArea == ExercisesConstants.anyTarget,
           )
           .toList();
       _finalExerciseList = _filteredExerciseList;
@@ -87,7 +88,7 @@ class _ExercisesState extends State<Exercises> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const Text(
-            "Exercises",
+            ExercisesConstants.title,
             style: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class _ExercisesState extends State<Exercises> {
               controller: _controller,
               decoration: const InputDecoration(
                 suffixIcon: Icon(Icons.search),
-                hintText: "Search",
+                hintText: ExercisesConstants.search,
               ),
               onChanged: _onSearchChanged,
             ),
@@ -141,46 +142,60 @@ class _ExercisesState extends State<Exercises> {
                                       Row(
                                         children: [
                                           Expanded(
-                                            child:
-                                                _getTargetButton("Any target"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.anyTarget,
+                                            ),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: _getTargetButton("Abs"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.abs,
+                                            ),
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: _getTargetButton("Arms"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.arms,
+                                            ),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: _getTargetButton("Back"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.back,
+                                            ),
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: _getTargetButton("Cardio"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.cardio,
+                                            ),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: _getTargetButton("Chest"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.chest,
+                                            ),
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: _getTargetButton("Legs"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.legs,
+                                            ),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child:
-                                                _getTargetButton("Shoulders"),
+                                            child: _getTargetButton(
+                                              ExercisesConstants.shoulders,
+                                            ),
                                           ),
                                         ],
                                       ),
