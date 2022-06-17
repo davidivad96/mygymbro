@@ -1,7 +1,7 @@
 class Exercise {
   final String name;
   final String description;
-  final String bodyArea;
+  final String targetArea;
 
-  Exercise(this.name, this.description, this.bodyArea);
+  Exercise(this.name, this.description, this.targetArea);
 }
