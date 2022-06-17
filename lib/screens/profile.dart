@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:mygymbro/utils/localization.dart';
-
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -53,8 +51,8 @@ class Profile extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 20.0),
                   child: ElevatedButton(
-                    child: Text(
-                      getTranslated(context, "edit_profile"),
+                    child: const Text(
+                      "Edit Profile",
                     ),
                     onPressed: () {},
                   ),

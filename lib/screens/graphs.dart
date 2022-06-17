@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
-import 'package:mygymbro/utils/localization.dart';
-
 class _SalesData {
   _SalesData(this.year, this.sales);
 
@@ -34,10 +32,10 @@ class _GraphsState extends State<Graphs> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            getTranslated(context, "graphs"),
-            style: const TextStyle(
-              fontSize: 25.0,
+          const Text(
+            "Graphs",
+            style: TextStyle(
+              fontSize: 30.0,
               fontWeight: FontWeight.bold,
             ),
           ),

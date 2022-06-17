@@ -1,21 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/exercise.dart';
-import 'package:mygymbro/utils/localization.dart';
 
 class Exercises extends StatefulWidget {
-  final List<Exercise> finalExerciseList;
-  final String targetArea;
-  final void Function(String area) setTargetArea;
-  final void Function(String query) onSearchChanged;
-
-  const Exercises({
-    Key? key,
-    required this.finalExerciseList,
-    required this.targetArea,
-    required this.setTargetArea,
-    required this.onSearchChanged,
-  }) : super(key: key);
+  const Exercises({Key? key}) : super(key: key);
 
   @override
   State<Exercises> createState() => _ExercisesState();
@@ -23,13 +12,70 @@ class Exercises extends StatefulWidget {
 
 class _ExercisesState extends State<Exercises> {
   final TextEditingController _controller = TextEditingController();
+  late List<Exercise> _exerciseList = [];
+  late List<Exercise> _filteredExerciseList = [];
+  late List<Exercise> _finalExerciseList = [];
+  late String _targetArea = "Any target";
+
+  _setTargetArea(String area) {
+    setState(() {
+      _targetArea = area;
+      _filteredExerciseList = _exerciseList
+          .where(
+            (Exercise exercise) =>
+                exercise.targetArea == _targetArea ||
+                _targetArea == "Any target",
+          )
+          .toList();
+      _finalExerciseList = _filteredExerciseList;
+    });
+  }
+
+  _onSearchChanged(String query) {
+    setState(() {
+      _finalExerciseList = _filteredExerciseList
+          .where(
+            (Exercise exercise) =>
+                exercise.name.toLowerCase().contains(query.toLowerCase()),
+          )
+          .toList();
+    });
+  }
+
+  _getTargetButton(String text) {
+    if (text == _targetArea) {
+      return ElevatedButton(
+        child: Text(text),
+        onPressed: () {
+          _setTargetArea(text);
+          _controller.clear();
+          Navigator.of(context).pop();
+        },
+      );
+    }
+    return OutlinedButton(
+      child: Text(text),
+      onPressed: () {
+        _setTargetArea(text);
+        _controller.clear();
+        Navigator.of(context).pop();
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _exerciseList = exercises;
+      _exerciseList.sort((a, b) => a.name.compareTo(b.name));
+      _finalExerciseList = _filteredExerciseList = _exerciseList;
+    });
+  }
 
   @override
   void dispose() {
     _controller.dispose();
-    Future.delayed(Duration.zero, () {
-      widget.onSearchChanged("");
-    });
     super.dispose();
   }
 
@@ -40,9 +86,9 @@ class _ExercisesState extends State<Exercises> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            getTranslated(context, "exercises"),
-            style: const TextStyle(
+          const Text(
+            "Exercises",
+            style: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.bold,
             ),
@@ -51,11 +97,11 @@ class _ExercisesState extends State<Exercises> {
             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
             child: TextField(
               controller: _controller,
-              decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search),
-                hintText: getTranslated(context, "search"),
+              decoration: const InputDecoration(
+                suffixIcon: Icon(Icons.search),
+                hintText: "Search",
               ),
-              onChanged: widget.onSearchChanged,
+              onChanged: _onSearchChanged,
             ),
           ),
           // Button to add new exercise
@@ -95,76 +141,46 @@ class _ExercisesState extends State<Exercises> {
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Any target",
-                                            ),
+                                            child:
+                                                _getTargetButton("Any target"),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Arms",
-                                            ),
+                                            child: _getTargetButton("Abs"),
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Abs",
-                                            ),
+                                            child: _getTargetButton("Arms"),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Back",
-                                            ),
+                                            child: _getTargetButton("Back"),
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Cardio",
-                                            ),
+                                            child: _getTargetButton("Cardio"),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Chest",
-                                            ),
+                                            child: _getTargetButton("Chest"),
                                           ),
                                         ],
                                       ),
                                       Row(
                                         children: [
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Legs",
-                                            ),
+                                            child: _getTargetButton("Legs"),
                                           ),
                                           const SizedBox(width: 20),
                                           Expanded(
-                                            child: TargetButton(
-                                              widget: widget,
-                                              controller: _controller,
-                                              text: "Shoulders",
-                                            ),
+                                            child:
+                                                _getTargetButton("Shoulders"),
                                           ),
                                         ],
                                       ),
@@ -178,16 +194,16 @@ class _ExercisesState extends State<Exercises> {
                       },
                     );
                   },
-                  child: Text(widget.targetArea),
+                  child: Text(_targetArea),
                 ),
               ),
             ],
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: widget.finalExerciseList.length,
+              itemCount: _finalExerciseList.length,
               itemBuilder: (context, index) {
-                final exercise = widget.finalExerciseList[index];
+                final exercise = _finalExerciseList[index];
                 return ListTile(
                   title: Text(exercise.name),
                   subtitle: Text(exercise.targetArea),
@@ -197,42 +213,6 @@ class _ExercisesState extends State<Exercises> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class TargetButton extends StatelessWidget {
-  const TargetButton({
-    Key? key,
-    required this.widget,
-    required TextEditingController controller,
-    required this.text,
-  })  : _controller = controller,
-        super(key: key);
-
-  final Exercises widget;
-  final TextEditingController _controller;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    if (text == widget.targetArea) {
-      return ElevatedButton(
-        child: Text(text),
-        onPressed: () {
-          widget.setTargetArea(text);
-          _controller.clear();
-          Navigator.of(context).pop();
-        },
-      );
-    }
-    return OutlinedButton(
-      child: Text(text),
-      onPressed: () {
-        widget.setTargetArea(text);
-        _controller.clear();
-        Navigator.of(context).pop();
-      },
     );
   }
 }
