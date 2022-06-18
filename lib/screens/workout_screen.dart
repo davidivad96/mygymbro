@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/data/workouts.dart';
+import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/workout_card.dart';
 
@@ -43,7 +44,7 @@ class WorkoutScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Container(
                       constraints: BoxConstraints(
-                        minHeight: Dimensions.workoutCardMinHeight,
+                        minHeight: Dimensions.cardMinHeight,
                       ),
                       child: WorkoutCard(
                         workout: workouts[index],
@@ -58,7 +59,14 @@ class WorkoutScreen extends StatelessWidget {
             bottom: 0.0,
             right: 0.0,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateWorkoutScreen(),
+                  ),
+                );
+              },
               child: const Icon(Icons.add),
             ),
           ),

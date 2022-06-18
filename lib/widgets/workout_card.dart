@@ -12,7 +12,7 @@ class WorkoutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(Dimensions.workoutCardPadding),
+        padding: EdgeInsets.all(Dimensions.cardPadding),
         child: Column(
           children: [
             Row(

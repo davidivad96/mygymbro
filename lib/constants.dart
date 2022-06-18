@@ -4,6 +4,17 @@ class GeneralConstants {
 
 class WorkoutConstants {
   static const title = "Workout";
+  static const createWorkout = "Create Workout";
+  static const dialogTitle = "Closing without saving";
+  static const dialogContent =
+      "Are you sure you want to close without saving your changes?";
+  static const dialogNo = "No";
+  static const dialogYes = "Yes";
+  static const workoutNameHintText = "Workout name";
+  static const workoutInitialName = "Morning workout";
+  static const addExercise = "Add an exercise";
+  static const save = "Save";
+  static const cancel = "Cancel";
 }
 
 class ExercisesConstants {
