@@ -101,56 +101,62 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                     ),
                   ),
                 ),
-                OutlinedButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          color: Theme.of(context).backgroundColor,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              Dimensions.modalPaddingHorizontal,
-                              Dimensions.modalPaddingVertical,
-                              Dimensions.modalPaddingHorizontal,
-                              Dimensions.modalPaddingVertical,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 30.0),
-                                  child: IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              color: Theme.of(context).backgroundColor,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                  Dimensions.modalPaddingHorizontal,
+                                  Dimensions.modalPaddingVertical,
+                                  Dimensions.modalPaddingHorizontal,
+                                  Dimensions.modalPaddingVertical,
                                 ),
-                                const ExercisesSearch(),
-                              ],
-                            ),
-                          ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin:
+                                          const EdgeInsets.only(bottom: 30.0),
+                                      child: IconButton(
+                                        icon: const Icon(Icons.close),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ),
+                                    const ExercisesSearch(),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          isScrollControlled: true,
                         );
                       },
-                      isScrollControlled: true,
-                    );
-                  },
-                  child: const Text(
-                    WorkoutConstants.addExercise,
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
+                      child: const Text(
+                        WorkoutConstants.addExercise,
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    WorkoutConstants.save,
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text(
+                        WorkoutConstants.save,
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
