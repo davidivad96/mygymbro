@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
+import 'package:mygymbro/utils/dimensions.dart';
 
 class Workout extends StatelessWidget {
   const Workout({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("hello: ${Dimensions.height} ${Dimensions.width}");
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 25.0, right: 25.0),
+      padding: EdgeInsets.fromLTRB(
+        Dimensions.screenPaddingHorizontal,
+        Dimensions.screenPaddingVertical,
+        Dimensions.screenPaddingHorizontal,
+        Dimensions.screenPaddingVertical,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            WorkoutConstants.title,
-            style: TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
+          Container(
+            margin: EdgeInsets.only(bottom: Dimensions.screenTitleMarginBottom),
+            child: const Text(
+              WorkoutConstants.title,
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Expanded(

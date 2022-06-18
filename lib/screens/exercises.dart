@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/exercise.dart';
+import 'package:mygymbro/utils/dimensions.dart';
 
 class Exercises extends StatefulWidget {
   const Exercises({Key? key}) : super(key: key);
@@ -83,19 +84,27 @@ class _ExercisesState extends State<Exercises> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 25.0, right: 25.0),
+      padding: EdgeInsets.fromLTRB(
+        Dimensions.screenPaddingHorizontal,
+        Dimensions.screenPaddingVertical,
+        Dimensions.screenPaddingHorizontal,
+        Dimensions.screenPaddingVertical,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          const Text(
-            ExercisesConstants.title,
-            style: TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: Dimensions.screenTitleMarginBottom),
+            child: const Text(
+              ExercisesConstants.title,
+              style: TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+          Container(
+            margin: EdgeInsets.only(bottom: Dimensions.searchInputMarginBottom),
             child: TextField(
               controller: _controller,
               decoration: const InputDecoration(
@@ -105,7 +114,6 @@ class _ExercisesState extends State<Exercises> {
               onChanged: _onSearchChanged,
             ),
           ),
-          // Button to add new exercise
           Row(
             children: [
               Expanded(
@@ -119,7 +127,7 @@ class _ExercisesState extends State<Exercises> {
                       context: context,
                       builder: (BuildContext context) {
                         return Wrap(
-                          children: <Widget>[
+                          children: [
                             Container(
                               color: Colors.transparent,
                               child: Container(
@@ -138,7 +146,7 @@ class _ExercisesState extends State<Exercises> {
                                     30.0,
                                   ),
                                   child: Wrap(
-                                    children: <Widget>[
+                                    children: [
                                       Row(
                                         children: [
                                           Expanded(

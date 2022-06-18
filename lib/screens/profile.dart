@@ -28,7 +28,7 @@ class Profile extends StatelessWidget {
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 Container(
                   width: 120,
                   height: 120,

@@ -26,7 +26,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      actions: <Widget>[
+      actions: [
         Container(
           width: 120,
           height: 120,
