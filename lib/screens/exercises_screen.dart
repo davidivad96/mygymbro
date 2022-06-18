@@ -5,14 +5,14 @@ import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 
-class Exercises extends StatefulWidget {
-  const Exercises({Key? key}) : super(key: key);
+class ExercisesScreen extends StatefulWidget {
+  const ExercisesScreen({Key? key}) : super(key: key);
 
   @override
-  State<Exercises> createState() => _ExercisesState();
+  State<ExercisesScreen> createState() => _ExercisesScreenState();
 }
 
-class _ExercisesState extends State<Exercises> {
+class _ExercisesScreenState extends State<ExercisesScreen> {
   final TextEditingController _controller = TextEditingController();
   late List<Exercise> _exerciseList = [];
   late List<Exercise> _filteredExerciseList = [];

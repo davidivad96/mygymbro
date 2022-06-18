@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
-import 'package:mygymbro/screens/profile.dart';
+import 'package:mygymbro/screens/profile_screen.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key})
@@ -38,7 +38,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
             onTap: () {
               showModalBottomSheet(
                 context: context,
-                builder: (context) => const Profile(),
+                builder: (context) => const ProfileScreen(),
                 isScrollControlled: true,
               );
             },

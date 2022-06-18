@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 
-class Graphs extends StatelessWidget {
-  const Graphs({Key? key}) : super(key: key);
+class GraphsScreen extends StatelessWidget {
+  const GraphsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:mygymbro/screens/exercises.dart';
-import 'package:mygymbro/screens/graphs.dart';
-import 'package:mygymbro/screens/workout.dart';
+import 'package:mygymbro/screens/exercises_screen.dart';
+import 'package:mygymbro/screens/graphs_screen.dart';
+import 'package:mygymbro/screens/workout_screen.dart';
 import 'package:mygymbro/widgets/bottom_nav_bar.dart';
 import 'package:mygymbro/widgets/custom_app_bar.dart';
 
@@ -16,9 +16,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final pages = [
-    const Workout(),
-    const Exercises(),
-    const Graphs(),
+    const WorkoutScreen(),
+    const ExercisesScreen(),
+    const GraphsScreen(),
   ];
 
   void _changePage(int? index) {
