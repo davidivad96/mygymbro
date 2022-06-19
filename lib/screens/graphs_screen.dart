@@ -18,8 +18,43 @@ class GraphsScreen extends StatelessWidget {
             child: const Text(
               GraphsConstants.title,
               style: TextStyle(
-                fontSize: 30.0,
+                fontSize: 26.0,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: SizedBox(
+                width: Dimensions.centeredContentWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.show_chart,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    const Text(
+                      GraphsConstants.noGraphsTitle,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      GraphsConstants.noGraphsText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

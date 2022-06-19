@@ -45,7 +45,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                 child: const Text(
                   WorkoutsConstants.title,
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: 26.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

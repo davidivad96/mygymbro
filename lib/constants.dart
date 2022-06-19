@@ -47,6 +47,8 @@ class ExercisesConstants {
 
 class GraphsConstants {
   static const title = "Graphs";
+  static const noGraphsTitle = "No graphs available";
+  static const noGraphsText = "Your graphs will appear here";
 }
 
 class ProfileConstants {
