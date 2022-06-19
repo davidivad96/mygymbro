@@ -85,12 +85,13 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
               ),
               Expanded(
                 child: _workouts.isNotEmpty
-                    ? ListView.builder(
+                    ? ReorderableListView.builder(
                         padding: EdgeInsets.zero,
                         scrollDirection: Axis.vertical,
                         itemCount: _workouts.length,
                         itemBuilder: (context, index) {
                           return Container(
+                            key: Key(_workouts[index].name),
                             constraints: BoxConstraints(
                               minHeight: Dimensions.cardMinHeight,
                             ),
@@ -101,6 +102,15 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                               deleteWorkout: () => _deleteWorkout(index),
                             ),
                           );
+                        },
+                        onReorder: (int oldIndex, int newIndex) {
+                          setState(() {
+                            if (newIndex > oldIndex) {
+                              newIndex -= 1;
+                            }
+                            final Workout item = _workouts.removeAt(oldIndex);
+                            _workouts.insert(newIndex, item);
+                          });
                         },
                       )
                     : SizedBox(
