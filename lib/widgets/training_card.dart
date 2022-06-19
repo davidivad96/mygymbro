@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 
 class TrainingCard extends StatefulWidget {
   final Training training;
   final void Function() editTraining;
+  final void Function() deleteTraining;
 
   const TrainingCard({
     Key? key,
     required this.training,
     required this.editTraining,
+    required this.deleteTraining,
   }) : super(key: key);
 
   @override
@@ -41,9 +44,22 @@ class _TrainingCardState extends State<TrainingCard> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  PopupMenuButton(
+                    onSelected: (value) {
+                      if (value == WorkoutsConstants.delete) {
+                        widget.deleteTraining();
+                      }
+                    },
                     child: const Icon(Icons.more_horiz),
-                    onTap: () {},
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: WorkoutsConstants.delete,
+                        child: Text(
+                          WorkoutsConstants.delete,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -141,6 +141,10 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     ).showDialog(context);
   }
 
+  _deleteTraining(int index) {
+    setState(() => _trainings.removeAt(index));
+  }
+
   void _onPressSaveButton() {
     if (_controller.text.isEmpty || _trainings.isEmpty) {
       showDialog(
@@ -229,6 +233,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                                   training: _trainings[index],
                                   editTraining: () {
                                     _editTraining(index);
+                                  },
+                                  deleteTraining: () {
+                                    _deleteTraining(index);
                                   },
                                 ),
                               );

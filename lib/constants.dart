@@ -21,6 +21,7 @@ class WorkoutsConstants {
   static const addExercise = "Add an exercise";
   static const save = "Save";
   static const cancel = "Cancel";
+  static const delete = "Delete";
   static const noExercisesText =
       "Get started by adding exercises to your workout routine";
   static const noWorkoutRoutinesTitle = "No workout routines";
