@@ -13,6 +13,9 @@ class WorkoutsConstants {
   static const dialogNoWorkoutNameTitle = "You didn't enter a name";
   static const dialogNoWorkoutNameContent =
       "Please enter a name for your workout";
+  static const dialogDeleteWorkoutTitle = "Deleting workout";
+  static const dialogDeleteWorkoutContent =
+      "This action cannot be undone. Are you sure you want to delete this workout?";
   static const dialogNo = "No";
   static const dialogYes = "Yes";
   static const dialogOk = "Ok";
@@ -21,6 +24,7 @@ class WorkoutsConstants {
   static const addExercise = "Add an exercise";
   static const save = "Save";
   static const cancel = "Cancel";
+  static const edit = "Edit";
   static const delete = "Delete";
   static const noExercisesText =
       "Get started by adding exercises to your workout routine";

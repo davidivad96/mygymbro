@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:mygymbro/constants.dart';
 
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 
-class WorkoutCard extends StatelessWidget {
+class WorkoutCard extends StatefulWidget {
   final Workout workout;
+  final void Function() deleteWorkout;
 
-  const WorkoutCard({Key? key, required this.workout}) : super(key: key);
+  const WorkoutCard({
+    Key? key,
+    required this.workout,
+    required this.deleteWorkout,
+  }) : super(key: key);
 
+  @override
+  State<WorkoutCard> createState() => _WorkoutCardState();
+}
+
+class _WorkoutCardState extends State<WorkoutCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -18,9 +29,30 @@ class WorkoutCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                GestureDetector(
+                PopupMenuButton(
+                  onSelected: (value) {
+                    if (value == WorkoutsConstants.edit) {
+                      //widget.editTraining();
+                    } else if (value == WorkoutsConstants.delete) {
+                      widget.deleteWorkout();
+                    }
+                  },
                   child: const Icon(Icons.more_horiz),
-                  onTap: () {},
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: WorkoutsConstants.edit,
+                      child: Text(
+                        WorkoutsConstants.edit,
+                      ),
+                    ),
+                    const PopupMenuItem(
+                      value: WorkoutsConstants.delete,
+                      child: Text(
+                        WorkoutsConstants.delete,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -29,7 +61,7 @@ class WorkoutCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  workout.name,
+                  widget.workout.name,
                   style: const TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.w500,
@@ -37,7 +69,7 @@ class WorkoutCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  workout.trainings
+                  widget.workout.trainings
                       .map((training) => training.exercise.name)
                       .join(", "),
                   style: TextStyle(

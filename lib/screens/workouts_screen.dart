@@ -23,6 +23,33 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     });
   }
 
+  void _deleteWorkout(int index) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(WorkoutsConstants.dialogDeleteWorkoutTitle),
+        content: const Text(
+          WorkoutsConstants.dialogDeleteWorkoutContent,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(WorkoutsConstants.dialogNo),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _workouts.removeAt(index);
+              });
+              Navigator.pop(context);
+            },
+            child: const Text(WorkoutsConstants.dialogYes),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -63,6 +90,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                             ),
                             child: WorkoutCard(
                               workout: _workouts[index],
+                              deleteWorkout: () => _deleteWorkout(index),
                             ),
                           );
                         },
