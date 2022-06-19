@@ -4,15 +4,22 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/exercises_search.dart';
 import 'package:mygymbro/widgets/training_card.dart';
 
 class CreateWorkoutScreen extends StatefulWidget {
-  final void Function(String name, List<Training> trainings) addWorkout;
+  final Workout? workout;
+  final void Function(String name, List<Training> trainings)? addWorkout;
+  final void Function(String name, List<Training> trainings)? editWorkout;
 
-  const CreateWorkoutScreen({Key? key, required this.addWorkout})
-      : super(key: key);
+  const CreateWorkoutScreen({
+    Key? key,
+    this.workout,
+    this.addWorkout,
+    this.editWorkout,
+  }) : super(key: key);
 
   @override
   State<CreateWorkoutScreen> createState() => _CreateWorkoutScreenState();
@@ -50,7 +57,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
         false;
   }
 
-  _addTraining(Exercise exercise) {
+  void _addTraining(Exercise exercise) {
     Picker(
       adapter: NumberPickerAdapter(
         data: [
@@ -97,7 +104,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     ).showDialog(context);
   }
 
-  _editTraining(int index) {
+  void _editTraining(int index) {
     Picker(
       adapter: NumberPickerAdapter(
         data: [
@@ -141,7 +148,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     ).showDialog(context);
   }
 
-  _deleteTraining(int index) {
+  void _deleteTraining(int index) {
     setState(() => _trainings.removeAt(index));
   }
 
@@ -169,8 +176,21 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
         ),
       );
     } else {
-      widget.addWorkout(_controller.text, _trainings);
+      if (widget.workout != null) {
+        widget.editWorkout!(_controller.text, _trainings);
+      } else {
+        widget.addWorkout!(_controller.text, _trainings);
+      }
       Navigator.pop(context);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.workout != null) {
+      _controller.text = widget.workout!.name;
+      _trainings.addAll(widget.workout!.trainings);
     }
   }
 

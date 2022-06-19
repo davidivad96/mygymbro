@@ -23,6 +23,12 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     });
   }
 
+  void _editWorkout(int index, String name, List<Training> trainings) {
+    setState(() {
+      _workouts[index] = Workout(name, trainings);
+    });
+  }
+
   void _deleteWorkout(int index) async {
     await showDialog(
       context: context,
@@ -90,6 +96,8 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                             ),
                             child: WorkoutCard(
                               workout: _workouts[index],
+                              editWorkout: (name, training) =>
+                                  _editWorkout(index, name, training),
                               deleteWorkout: () => _deleteWorkout(index),
                             ),
                           );

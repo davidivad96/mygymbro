@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbro/constants.dart';
 
+import 'package:mygymbro/constants.dart';
+import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/workout.dart';
+import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 
 class WorkoutCard extends StatefulWidget {
   final Workout workout;
+  final void Function(String name, List<Training> trainings) editWorkout;
   final void Function() deleteWorkout;
 
   const WorkoutCard({
     Key? key,
     required this.workout,
+    required this.editWorkout,
     required this.deleteWorkout,
   }) : super(key: key);
 
@@ -32,7 +36,15 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 PopupMenuButton(
                   onSelected: (value) {
                     if (value == WorkoutsConstants.edit) {
-                      //widget.editTraining();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateWorkoutScreen(
+                            workout: widget.workout,
+                            editWorkout: widget.editWorkout,
+                          ),
+                        ),
+                      );
                     } else if (value == WorkoutsConstants.delete) {
                       widget.deleteWorkout();
                     }
