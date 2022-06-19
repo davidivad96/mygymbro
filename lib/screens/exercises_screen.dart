@@ -36,7 +36,7 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
             ),
           ),
           ExercisesSearch(
-            onTapItem: (Exercise exercise) {},
+            addTraining: (Exercise exercise) {},
           ),
         ],
       ),

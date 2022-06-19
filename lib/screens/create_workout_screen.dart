@@ -20,7 +20,7 @@ class CreateWorkoutScreen extends StatefulWidget {
 
 class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
   final TextEditingController _controller = TextEditingController(
-    text: WorkoutConstants.workoutInitialName,
+    text: WorkoutsConstants.workoutInitialName,
   );
   final List<Training> _trainings = [];
 
@@ -31,18 +31,18 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text(WorkoutConstants.dialogTitle),
+            title: const Text(WorkoutsConstants.dialogTitle),
             content: const Text(
-              WorkoutConstants.dialogContent,
+              WorkoutsConstants.dialogContent,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text(WorkoutConstants.dialogNo),
+                child: const Text(WorkoutsConstants.dialogNo),
               ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
-                child: const Text(WorkoutConstants.dialogYes),
+                child: const Text(WorkoutsConstants.dialogYes),
               ),
             ],
           ),
@@ -50,7 +50,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
         false;
   }
 
-  _showPickerNumber(Exercise exercise) {
+  _addTraining(Exercise exercise) {
     Picker(
       adapter: NumberPickerAdapter(
         data: [
@@ -97,6 +97,50 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     ).showDialog(context);
   }
 
+  _editTraining(int index) {
+    Picker(
+      adapter: NumberPickerAdapter(
+        data: [
+          NumberPickerColumn(
+            begin: 1,
+            end: 10,
+            jump: 1,
+            initValue: _trainings[index].numSets,
+          ),
+          NumberPickerColumn(
+            begin: 1,
+            end: 100,
+            jump: 1,
+            initValue: _trainings[index].numReps,
+          ),
+        ],
+      ),
+      delimiter: [
+        PickerDelimiter(
+          child: Container(
+            width: 30.0,
+            alignment: Alignment.center,
+            child: const Icon(Icons.close),
+          ),
+        )
+      ],
+      hideHeader: true,
+      title: const Text(ExercisesConstants.selectSetsAndReps),
+      selectedTextStyle: const TextStyle(color: Colors.blue),
+      onConfirm: (Picker picker, List value) {
+        setState(
+          () => {
+            _trainings[index] = Training(
+              _trainings[index].exercise,
+              picker.getSelectedValues()[0] as int,
+              picker.getSelectedValues()[1] as int,
+            )
+          },
+        );
+      },
+    ).showDialog(context);
+  }
+
   void _onPressSaveButton() {
     if (_controller.text.isEmpty || _trainings.isEmpty) {
       showDialog(
@@ -104,18 +148,18 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
         builder: (context) => AlertDialog(
           title: Text(
             _controller.text.isEmpty
-                ? WorkoutConstants.dialogNoWorkoutNameTitle
-                : WorkoutConstants.dialogNoExercisesTitle,
+                ? WorkoutsConstants.dialogNoWorkoutNameTitle
+                : WorkoutsConstants.dialogNoExercisesTitle,
           ),
           content: Text(
             _controller.text.isEmpty
-                ? WorkoutConstants.dialogNoWorkoutNameContent
-                : WorkoutConstants.dialogNoExercisesContent,
+                ? WorkoutsConstants.dialogNoWorkoutNameContent
+                : WorkoutsConstants.dialogNoExercisesContent,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(WorkoutConstants.dialogOk),
+              child: const Text(WorkoutsConstants.dialogOk),
             ),
           ],
         ),
@@ -139,7 +183,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            WorkoutConstants.createWorkout,
+            WorkoutsConstants.createWorkout,
             style: TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
@@ -158,13 +202,12 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
               Dimensions.screenPaddingVertical,
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextField(
                   controller: _controller,
                   decoration: const InputDecoration(
-                    hintText: WorkoutConstants.workoutNameHintText,
+                    hintText: WorkoutsConstants.workoutNameHintText,
                   ),
                 ),
                 Expanded(
@@ -174,16 +217,31 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                       bottom: 20.0,
                     ),
                     child: _trainings.isNotEmpty
-                        ? ListView.builder(
+                        ? ReorderableListView.builder(
                             itemCount: _trainings.length,
                             itemBuilder: (context, index) {
                               return Container(
+                                key: Key(_trainings[index].exercise.name),
                                 constraints: BoxConstraints(
                                   minHeight: Dimensions.cardMinHeight,
                                 ),
-                                child:
-                                    TrainingCard(training: _trainings[index]),
+                                child: TrainingCard(
+                                  training: _trainings[index],
+                                  editTraining: () {
+                                    _editTraining(index);
+                                  },
+                                ),
                               );
+                            },
+                            onReorder: (int oldIndex, int newIndex) {
+                              setState(() {
+                                if (newIndex > oldIndex) {
+                                  newIndex -= 1;
+                                }
+                                final Training item =
+                                    _trainings.removeAt(oldIndex);
+                                _trainings.insert(newIndex, item);
+                              });
                             },
                           )
                         : SizedBox(
@@ -198,7 +256,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                                   height: 10.0,
                                 ),
                                 Text(
-                                  WorkoutConstants.noExercisesText,
+                                  WorkoutsConstants.noExercisesText,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.grey[500],
@@ -242,8 +300,8 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                                       ),
                                     ),
                                     ExercisesSearch(
-                                      onTapItem: (Exercise exercise) {
-                                        _showPickerNumber(exercise);
+                                      addTraining: (Exercise exercise) {
+                                        _addTraining(exercise);
                                       },
                                     ),
                                   ],
@@ -255,7 +313,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                         );
                       },
                       child: const Text(
-                        WorkoutConstants.addExercise,
+                        WorkoutsConstants.addExercise,
                         style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,
@@ -267,7 +325,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                         _onPressSaveButton();
                       },
                       child: const Text(
-                        WorkoutConstants.save,
+                        WorkoutsConstants.save,
                         style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.bold,

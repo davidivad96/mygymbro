@@ -2,8 +2,8 @@ class GeneralConstants {
   static const String appName = 'MyGymBro';
 }
 
-class WorkoutConstants {
-  static const title = "Workout";
+class WorkoutsConstants {
+  static const title = "Workouts";
   static const createWorkout = "Create Workout";
   static const dialogTitle = "Closing without saving";
   static const dialogContent =

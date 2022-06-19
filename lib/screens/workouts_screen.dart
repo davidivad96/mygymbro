@@ -7,14 +7,14 @@ import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/workout_card.dart';
 
-class WorkoutScreen extends StatefulWidget {
-  const WorkoutScreen({Key? key}) : super(key: key);
+class WorkoutsScreen extends StatefulWidget {
+  const WorkoutsScreen({Key? key}) : super(key: key);
 
   @override
-  State<WorkoutScreen> createState() => _WorkoutScreenState();
+  State<WorkoutsScreen> createState() => _WorkoutsScreenState();
 }
 
-class _WorkoutScreenState extends State<WorkoutScreen> {
+class _WorkoutsScreenState extends State<WorkoutsScreen> {
   final List<Workout> _workouts = [];
 
   void _addWorkout(String name, List<Training> trainings) {
@@ -43,7 +43,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                 margin:
                     EdgeInsets.only(bottom: Dimensions.screenTitleMarginBottom),
                 child: const Text(
-                  WorkoutConstants.title,
+                  WorkoutsConstants.title,
                   style: TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              WorkoutConstants.noWorkoutRoutinesTitle,
+                              WorkoutsConstants.noWorkoutRoutinesTitle,
                               style: TextStyle(
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.bold,
@@ -83,7 +83,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                               height: 10.0,
                             ),
                             Text(
-                              WorkoutConstants.noWorkoutRoutinesText,
+                              WorkoutsConstants.noWorkoutRoutinesText,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.grey[500],

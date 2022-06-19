@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+import 'package:mygymbro/constants.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
@@ -43,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            "Workout",
+            WorkoutsConstants.title,
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),
@@ -58,7 +59,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            "Exercises",
+            ExercisesConstants.title,
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),
@@ -73,7 +74,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             color: Theme.of(context).highlightColor,
           ),
           title: Text(
-            "Graphs",
+            GraphsConstants.title,
             style: TextStyle(color: Theme.of(context).highlightColor),
           ),
         ),
