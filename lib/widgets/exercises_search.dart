@@ -6,7 +6,9 @@ import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 
 class ExercisesSearch extends StatefulWidget {
-  const ExercisesSearch({Key? key}) : super(key: key);
+  final void Function(Exercise exercise) onTapItem;
+
+  const ExercisesSearch({Key? key, required this.onTapItem}) : super(key: key);
 
   @override
   State<ExercisesSearch> createState() => _ExercisesSearchState();
@@ -212,9 +214,15 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
               itemCount: _finalExerciseList.length,
               itemBuilder: (context, index) {
                 final exercise = _finalExerciseList[index];
-                return ListTile(
-                  title: Text(exercise.name),
-                  subtitle: Text(exercise.targetArea),
+                return Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: InkWell(
+                    onTap: () => widget.onTapItem(exercise),
+                    child: ListTile(
+                      title: Text(exercise.name),
+                      subtitle: Text(exercise.targetArea),
+                    ),
+                  ),
                 );
               },
             ),

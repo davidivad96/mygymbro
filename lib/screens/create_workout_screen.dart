@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 import 'package:mygymbro/constants.dart';
-import 'package:mygymbro/data/trainings.dart';
+import 'package:mygymbro/models/exercise.dart';
+import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/exercises_search.dart';
 import 'package:mygymbro/widgets/training_card.dart';
 
 class CreateWorkoutScreen extends StatefulWidget {
-  const CreateWorkoutScreen({Key? key}) : super(key: key);
+  final void Function(String name, List<Training> trainings) addWorkout;
+
+  const CreateWorkoutScreen({Key? key, required this.addWorkout})
+      : super(key: key);
 
   @override
   State<CreateWorkoutScreen> createState() => _CreateWorkoutScreenState();
@@ -17,8 +22,12 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
   final TextEditingController _controller = TextEditingController(
     text: WorkoutConstants.workoutInitialName,
   );
+  final List<Training> _trainings = [];
 
   Future<bool> _onWillPop() async {
+    if (_trainings.isEmpty) {
+      return true;
+    }
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -39,6 +48,82 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
           ),
         )) ??
         false;
+  }
+
+  _showPickerNumber(Exercise exercise) {
+    Picker(
+      adapter: NumberPickerAdapter(
+        data: [
+          const NumberPickerColumn(
+            begin: 1,
+            end: 10,
+            jump: 1,
+            initValue: 3,
+          ),
+          const NumberPickerColumn(
+            begin: 1,
+            end: 100,
+            jump: 1,
+            initValue: 5,
+          ),
+        ],
+      ),
+      delimiter: [
+        PickerDelimiter(
+          child: Container(
+            width: 30.0,
+            alignment: Alignment.center,
+            child: const Icon(Icons.close),
+          ),
+        )
+      ],
+      hideHeader: true,
+      title: const Text(ExercisesConstants.selectSetsAndReps),
+      selectedTextStyle: const TextStyle(color: Colors.blue),
+      onConfirm: (Picker picker, List value) {
+        setState(
+          () => {
+            _trainings.add(
+              Training(
+                exercise,
+                picker.getSelectedValues()[0] as int,
+                picker.getSelectedValues()[1] as int,
+              ),
+            )
+          },
+        );
+        Navigator.pop(context);
+      },
+    ).showDialog(context);
+  }
+
+  void _onPressSaveButton() {
+    if (_controller.text.isEmpty || _trainings.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            _controller.text.isEmpty
+                ? WorkoutConstants.dialogNoWorkoutNameTitle
+                : WorkoutConstants.dialogNoExercisesTitle,
+          ),
+          content: Text(
+            _controller.text.isEmpty
+                ? WorkoutConstants.dialogNoWorkoutNameContent
+                : WorkoutConstants.dialogNoExercisesContent,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(WorkoutConstants.dialogOk),
+            ),
+          ],
+        ),
+      );
+    } else {
+      widget.addWorkout(_controller.text, _trainings);
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -88,23 +173,49 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                       top: 20.0,
                       bottom: 20.0,
                     ),
-                    child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          constraints: BoxConstraints(
-                            minHeight: Dimensions.cardMinHeight,
+                    child: _trainings.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: _trainings.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                constraints: BoxConstraints(
+                                  minHeight: Dimensions.cardMinHeight,
+                                ),
+                                child:
+                                    TrainingCard(training: _trainings[index]),
+                              );
+                            },
+                          )
+                        : SizedBox(
+                            width: Dimensions.centeredContentWidth,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.fitness_center,
+                                ),
+                                const SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  WorkoutConstants.noExercisesText,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          child: TrainingCard(training: trainings[index]),
-                        );
-                      },
-                    ),
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Theme.of(context).highlightColor,
+                      ),
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
@@ -122,14 +233,19 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      margin:
-                                          const EdgeInsets.only(bottom: 30.0),
+                                      margin: const EdgeInsets.only(
+                                        bottom: 15.0,
+                                      ),
                                       child: IconButton(
                                         icon: const Icon(Icons.close),
                                         onPressed: () => Navigator.pop(context),
                                       ),
                                     ),
-                                    const ExercisesSearch(),
+                                    ExercisesSearch(
+                                      onTapItem: (Exercise exercise) {
+                                        _showPickerNumber(exercise);
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),
@@ -147,7 +263,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _onPressSaveButton();
+                      },
                       child: const Text(
                         WorkoutConstants.save,
                         style: TextStyle(

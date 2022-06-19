@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
-import 'package:mygymbro/data/workouts.dart';
+import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/workout_card.dart';
 
-class WorkoutScreen extends StatelessWidget {
+class WorkoutScreen extends StatefulWidget {
   const WorkoutScreen({Key? key}) : super(key: key);
+
+  @override
+  State<WorkoutScreen> createState() => _WorkoutScreenState();
+}
+
+class _WorkoutScreenState extends State<WorkoutScreen> {
+  final List<Workout> _workouts = [];
+
+  void _addWorkout(String name, List<Training> trainings) {
+    setState(() {
+      _workouts.add(Workout(name, trainings));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +51,47 @@ class WorkoutScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  itemCount: workouts.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      constraints: BoxConstraints(
-                        minHeight: Dimensions.cardMinHeight,
+                child: _workouts.isNotEmpty
+                    ? ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemCount: _workouts.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            constraints: BoxConstraints(
+                              minHeight: Dimensions.cardMinHeight,
+                            ),
+                            child: WorkoutCard(
+                              workout: _workouts[index],
+                            ),
+                          );
+                        },
+                      )
+                    : SizedBox(
+                        width: Dimensions.centeredContentWidth,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              WorkoutConstants.noWorkoutRoutinesTitle,
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Text(
+                              WorkoutConstants.noWorkoutRoutinesText,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.grey[500],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: WorkoutCard(
-                        workout: workouts[index],
-                      ),
-                    );
-                  },
-                ),
               ),
             ],
           ),
@@ -63,7 +103,9 @@ class WorkoutScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CreateWorkoutScreen(),
+                    builder: (context) => CreateWorkoutScreen(
+                      addWorkout: _addWorkout,
+                    ),
                   ),
                 );
               },

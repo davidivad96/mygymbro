@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
+import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/exercises_search.dart';
 
@@ -34,7 +35,9 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
               ),
             ),
           ),
-          const ExercisesSearch(),
+          ExercisesSearch(
+            onTapItem: (Exercise exercise) {},
+          ),
         ],
       ),
     );
