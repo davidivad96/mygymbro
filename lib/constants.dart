@@ -5,6 +5,7 @@ class GeneralConstants {
 class WorkoutsConstants {
   static const title = "Workouts";
   static const createWorkout = "Create Workout";
+  static const editWorkout = "Edit Workout";
   static const dialogTitle = "Closing without saving";
   static const dialogContent =
       "Are you sure you want to close without saving your changes?";
@@ -26,6 +27,7 @@ class WorkoutsConstants {
   static const cancel = "Cancel";
   static const edit = "Edit";
   static const delete = "Delete";
+  static const start = "Start";
   static const noExercisesText =
       "Get started by adding exercises to your workout routine";
   static const noWorkoutRoutinesTitle = "No workout routines";

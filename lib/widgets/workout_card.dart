@@ -101,7 +101,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                     minimumSize: const Size(50.0, 30.0),
                   ),
                   child: const Text(
-                    "Start",
+                    WorkoutsConstants.start,
                     style: TextStyle(
                       fontSize: 15.0,
                       fontWeight: FontWeight.w500,

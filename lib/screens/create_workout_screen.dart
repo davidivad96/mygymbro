@@ -30,9 +30,10 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     text: WorkoutsConstants.workoutInitialName,
   );
   final List<Training> _trainings = [];
+  bool hasChanged = false;
 
   Future<bool> _onWillPop() async {
-    if (_trainings.isEmpty) {
+    if (!hasChanged) {
       return true;
     }
     return (await showDialog(
@@ -96,7 +97,8 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                 picker.getSelectedValues()[0] as int,
                 picker.getSelectedValues()[1] as int,
               ),
-            )
+            ),
+            hasChanged = true,
           },
         );
         Navigator.pop(context);
@@ -141,7 +143,8 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
               _trainings[index].exercise,
               picker.getSelectedValues()[0] as int,
               picker.getSelectedValues()[1] as int,
-            )
+            ),
+            hasChanged = true,
           },
         );
       },
@@ -149,7 +152,12 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
   }
 
   void _deleteTraining(int index) {
-    setState(() => _trainings.removeAt(index));
+    setState(
+      () => {
+        _trainings.removeAt(index),
+        hasChanged = true,
+      },
+    );
   }
 
   void _onPressSaveButton() {
@@ -206,9 +214,11 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            WorkoutsConstants.createWorkout,
-            style: TextStyle(
+          title: Text(
+            widget.workout != null
+                ? WorkoutsConstants.editWorkout
+                : WorkoutsConstants.createWorkout,
+            style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.bold,
             ),
@@ -233,6 +243,11 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                   decoration: const InputDecoration(
                     hintText: WorkoutsConstants.workoutNameHintText,
                   ),
+                  onChanged: (text) {
+                    setState(
+                      () => hasChanged = true,
+                    );
+                  },
                 ),
                 Expanded(
                   child: Container(
