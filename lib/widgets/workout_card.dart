@@ -102,7 +102,10 @@ class _WorkoutCardState extends State<WorkoutCard> {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const StartWorkoutScreen(),
+                      builder: (context) => StartWorkoutScreen(
+                        workoutName: widget.workout.name,
+                      ),
+                      fullscreenDialog: true,
                     ),
                   ),
                 ),
