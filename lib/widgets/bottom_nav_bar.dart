@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+
 import 'package:mygymbro/constants.dart';
 
 class BottomNavBar extends StatefulWidget {
