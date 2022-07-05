@@ -7,6 +7,8 @@ import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/exercises_search.dart';
+import 'package:mygymbro/widgets/main_button.dart';
+import 'package:mygymbro/widgets/secondary_button.dart';
 import 'package:mygymbro/widgets/training_card.dart';
 
 class CreateWorkoutScreen extends StatefulWidget {
@@ -46,11 +48,21 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text(WorkoutsConstants.dialogNo),
+                child: Text(
+                  WorkoutsConstants.dialogNo,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
-                child: const Text(WorkoutsConstants.dialogYes),
+                child: Text(
+                  WorkoutsConstants.dialogYes,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
               ),
             ],
           ),
@@ -87,7 +99,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
       ],
       hideHeader: true,
       title: const Text(ExercisesConstants.selectSetsAndReps),
-      selectedTextStyle: const TextStyle(color: Colors.blue),
+      selectedTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+      cancelTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+      confirmTextStyle: TextStyle(color: Theme.of(context).primaryColor),
       onConfirm: (Picker picker, List value) {
         setState(
           () => {
@@ -135,7 +149,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
       ],
       hideHeader: true,
       title: const Text(ExercisesConstants.selectSetsAndReps),
-      selectedTextStyle: const TextStyle(color: Colors.blue),
+      selectedTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+      cancelTextStyle: TextStyle(color: Theme.of(context).primaryColor),
+      confirmTextStyle: TextStyle(color: Theme.of(context).primaryColor),
       onConfirm: (Picker picker, List value) {
         setState(
           () => {
@@ -312,10 +328,8 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: Theme.of(context).highlightColor,
-                      ),
+                    SecondaryButton(
+                      text: WorkoutsConstants.addExercise,
                       onPressed: () {
                         showModalBottomSheet(
                           context: context,
@@ -354,25 +368,10 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                           isScrollControlled: true,
                         );
                       },
-                      child: const Text(
-                        WorkoutsConstants.addExercise,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _onPressSaveButton();
-                      },
-                      child: const Text(
-                        WorkoutsConstants.save,
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    MainButton(
+                      text: WorkoutsConstants.save,
+                      onPressed: _onPressSaveButton,
                     ),
                   ],
                 ),

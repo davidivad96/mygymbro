@@ -40,7 +40,12 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(WorkoutsConstants.dialogNo),
+            child: Text(
+              WorkoutsConstants.dialogNo,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -49,7 +54,12 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
               });
               Navigator.pop(context);
             },
-            child: const Text(WorkoutsConstants.dialogYes),
+            child: Text(
+              WorkoutsConstants.dialogYes,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
           ),
         ],
       ),
@@ -145,6 +155,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
             bottom: 0.0,
             right: 0.0,
             child: FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
               onPressed: () {
                 Navigator.push(
                   context,

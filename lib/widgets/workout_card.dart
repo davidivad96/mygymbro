@@ -4,7 +4,9 @@ import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/create_workout_screen.dart';
+import 'package:mygymbro/screens/start_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/main_button.dart';
 
 class WorkoutCard extends StatefulWidget {
   final Workout workout;
@@ -57,11 +59,11 @@ class _WorkoutCardState extends State<WorkoutCard> {
                         WorkoutsConstants.edit,
                       ),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: WorkoutsConstants.delete,
                       child: Text(
                         WorkoutsConstants.delete,
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(color: Theme.of(context).errorColor),
                       ),
                     ),
                   ],
@@ -95,16 +97,12 @@ class _WorkoutCardState extends State<WorkoutCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(50.0, 30.0),
-                  ),
-                  child: const Text(
-                    WorkoutsConstants.start,
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
+                MainButton(
+                  text: WorkoutsConstants.start,
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const StartWorkoutScreen(),
                     ),
                   ),
                 ),

@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: GeneralConstants.appName,
       theme: ThemeData(
-        primaryColor: Colors.blueAccent,
-        highlightColor: Colors.white,
+        primaryColor: const Color(0xFF3B60E4),
+        highlightColor: const Color(0XFFFBFBFF),
         backgroundColor: Colors.grey[200],
+        errorColor: const Color(0xFFEF3054),
         fontFamily: "Poppins",
       ),
       home: const Home(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/main_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -58,10 +59,8 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20.0),
-                  child: ElevatedButton(
-                    child: const Text(
-                      ProfileConstants.editProfile,
-                    ),
+                  child: MainButton(
+                    text: ProfileConstants.editProfile,
                     onPressed: () {},
                   ),
                 ),

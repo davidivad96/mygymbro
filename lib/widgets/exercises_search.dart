@@ -4,6 +4,8 @@ import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/main_button.dart';
+import 'package:mygymbro/widgets/secondary_button.dart';
 
 class ExercisesSearch extends StatefulWidget {
   final void Function(Exercise exercise) addTraining;
@@ -49,8 +51,8 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
 
   _getTargetButton(String text) {
     if (text == _targetArea) {
-      return ElevatedButton(
-        child: Text(text),
+      return MainButton(
+        text: text,
         onPressed: () {
           _setTargetArea(text);
           _controller.clear();
@@ -58,8 +60,8 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
         },
       );
     }
-    return OutlinedButton(
-      child: Text(text),
+    return SecondaryButton(
+      text: text,
       onPressed: () {
         _setTargetArea(text);
         _controller.clear();
@@ -105,10 +107,8 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
           Row(
             children: [
               Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor,
-                  ),
+                child: MainButton(
+                  text: _targetArea,
                   onPressed: () {
                     showModalBottomSheet(
                       backgroundColor: Colors.transparent,
@@ -205,7 +205,6 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
                       },
                     );
                   },
-                  child: Text(_targetArea),
                 ),
               ),
             ],

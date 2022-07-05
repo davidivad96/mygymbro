@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/secondary_button.dart';
 
 class TrainingCard extends StatefulWidget {
   final Training training;
@@ -52,11 +53,11 @@ class _TrainingCardState extends State<TrainingCard> {
                     },
                     child: const Icon(Icons.more_horiz),
                     itemBuilder: (context) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: WorkoutsConstants.delete,
                         child: Text(
                           WorkoutsConstants.delete,
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                       ),
                     ],
@@ -68,11 +69,10 @@ class _TrainingCardState extends State<TrainingCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: OutlinedButton(
+                  child: SecondaryButton(
+                    text:
+                        "${widget.training.numSets.toString()}x${widget.training.numReps.toString()}",
                     onPressed: widget.editTraining,
-                    child: Text(
-                      "${widget.training.numSets.toString()}x${widget.training.numReps.toString()}",
-                    ),
                   ),
                 ),
               ],
