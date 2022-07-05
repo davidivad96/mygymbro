@@ -6,6 +6,7 @@ import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/exercises_search.dart';
 import 'package:mygymbro/widgets/main_button.dart';
 import 'package:mygymbro/widgets/secondary_button.dart';
@@ -230,14 +231,10 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            widget.workout != null
+          title: BigText(
+            text: widget.workout != null
                 ? WorkoutsConstants.editWorkout
                 : WorkoutsConstants.createWorkout,
-            style: const TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
           ),
           backgroundColor: Theme.of(context).primaryColor,
           elevation: 2.0,

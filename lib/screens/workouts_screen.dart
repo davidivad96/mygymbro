@@ -5,6 +5,7 @@ import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/workout_card.dart';
 
 class WorkoutsScreen extends StatefulWidget {
@@ -128,12 +129,8 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              WorkoutsConstants.noWorkoutRoutinesTitle,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            const BigText(
+                              text: WorkoutsConstants.noWorkoutRoutinesTitle,
                             ),
                             const SizedBox(
                               height: 10.0,

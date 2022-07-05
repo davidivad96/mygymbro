@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/main_button.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -49,13 +50,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 10.0),
-                  child: const Text(
-                    "John Doe",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  child: const BigText(text: "John Doe"),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 20.0),

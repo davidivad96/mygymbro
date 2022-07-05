@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/big_text.dart';
 
 class GraphsScreen extends StatelessWidget {
   const GraphsScreen({Key? key}) : super(key: key);
@@ -36,13 +37,7 @@ class GraphsScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    const Text(
-                      GraphsConstants.noGraphsTitle,
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    const BigText(text: GraphsConstants.noGraphsTitle),
                     const SizedBox(
                       height: 10.0,
                     ),

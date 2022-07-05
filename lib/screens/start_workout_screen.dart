@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:mygymbro/widgets/big_text.dart';
+
 class StartWorkoutScreen extends StatefulWidget {
-  const StartWorkoutScreen({Key? key}) : super(key: key);
+  final String workoutName;
+
+  const StartWorkoutScreen({Key? key, required this.workoutName})
+      : super(key: key);
 
   @override
   State<StartWorkoutScreen> createState() => _StartWorkoutScreenState();
@@ -12,13 +17,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "hello",
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: BigText(text: widget.workoutName),
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 2.0,
       ),

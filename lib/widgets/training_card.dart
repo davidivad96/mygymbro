@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/secondary_button.dart';
 
 class TrainingCard extends StatefulWidget {
@@ -37,12 +38,8 @@ class _TrainingCardState extends State<TrainingCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      widget.training.exercise.name,
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: BigText(
+                      text: widget.training.exercise.name,
                     ),
                   ),
                   PopupMenuButton(
