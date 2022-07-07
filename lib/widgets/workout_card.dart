@@ -32,43 +32,41 @@ class _WorkoutCardState extends State<WorkoutCard> {
         padding: EdgeInsets.all(Dimensions.cardPadding),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                PopupMenuButton(
-                  onSelected: (value) {
-                    if (value == WorkoutsConstants.edit) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateWorkoutScreen(
-                            workout: widget.workout,
-                            editWorkout: widget.editWorkout,
-                          ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: PopupMenuButton(
+                onSelected: (value) {
+                  if (value == WorkoutsConstants.edit) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CreateWorkoutScreen(
+                          workout: widget.workout,
+                          editWorkout: widget.editWorkout,
                         ),
-                      );
-                    } else if (value == WorkoutsConstants.delete) {
-                      widget.deleteWorkout();
-                    }
-                  },
-                  child: const Icon(Icons.more_horiz),
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: WorkoutsConstants.edit,
-                      child: Text(
-                        WorkoutsConstants.edit,
                       ),
+                    );
+                  } else if (value == WorkoutsConstants.delete) {
+                    widget.deleteWorkout();
+                  }
+                },
+                child: const Icon(Icons.more_horiz),
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: WorkoutsConstants.edit,
+                    child: Text(
+                      WorkoutsConstants.edit,
                     ),
-                    PopupMenuItem(
-                      value: WorkoutsConstants.delete,
-                      child: Text(
-                        WorkoutsConstants.delete,
-                        style: TextStyle(color: Theme.of(context).errorColor),
-                      ),
+                  ),
+                  PopupMenuItem(
+                    value: WorkoutsConstants.delete,
+                    child: Text(
+                      WorkoutsConstants.delete,
+                      style: TextStyle(color: Theme.of(context).errorColor),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -94,22 +92,18 @@ class _WorkoutCardState extends State<WorkoutCard> {
               ],
             ),
             const SizedBox(height: 10.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MainButton(
-                  text: WorkoutsConstants.start,
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StartWorkoutScreen(
-                        workoutName: widget.workout.name,
-                      ),
-                      fullscreenDialog: true,
-                    ),
+            MainButton(
+              text: WorkoutsConstants.start,
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StartWorkoutScreen(
+                    workoutName: widget.workout.name,
+                    trainings: widget.workout.trainings,
                   ),
+                  fullscreenDialog: true,
                 ),
-              ],
+              ),
             ),
           ],
         ),

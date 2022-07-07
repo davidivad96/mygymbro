@@ -142,7 +142,7 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
                                               ExercisesConstants.anyTarget,
                                             ),
                                           ),
-                                          const SizedBox(width: 20),
+                                          const SizedBox(width: 20.0),
                                           Expanded(
                                             child: _getTargetButton(
                                               ExercisesConstants.abs,
@@ -157,7 +157,7 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
                                               ExercisesConstants.arms,
                                             ),
                                           ),
-                                          const SizedBox(width: 20),
+                                          const SizedBox(width: 20.0),
                                           Expanded(
                                             child: _getTargetButton(
                                               ExercisesConstants.back,
@@ -172,7 +172,7 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
                                               ExercisesConstants.cardio,
                                             ),
                                           ),
-                                          const SizedBox(width: 20),
+                                          const SizedBox(width: 20.0),
                                           Expanded(
                                             child: _getTargetButton(
                                               ExercisesConstants.chest,
@@ -187,7 +187,7 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
                                               ExercisesConstants.legs,
                                             ),
                                           ),
-                                          const SizedBox(width: 20),
+                                          const SizedBox(width: 20.0),
                                           Expanded(
                                             child: _getTargetButton(
                                               ExercisesConstants.shoulders,

@@ -177,9 +177,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     );
   }
 
-  void _onPressSaveButton() {
+  void _onPressSaveButton() async {
     if (_controller.text.isEmpty || _trainings.isEmpty) {
-      showDialog(
+      await showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(
@@ -195,7 +195,12 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text(WorkoutsConstants.dialogOk),
+              child: Text(
+                WorkoutsConstants.dialogOk,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
             ),
           ],
         ),
