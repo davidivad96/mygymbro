@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import 'package:mygymbro/models/training.dart';
@@ -120,22 +121,32 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                       ),
                     ),
                   ),
-                  const Center(
-                    child: Text(
-                      '',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
+                  Center(
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
                       ),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r"^\d+\.?\d{0,3}"),
+                        ),
+                      ],
                     ),
                   ),
                   Center(
-                    child: Text(
-                      '$numReps',
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
                       ),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                     ),
                   ),
                   Center(
@@ -238,6 +249,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
             ),
           );
         },
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       ),
     );
   }
