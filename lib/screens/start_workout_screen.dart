@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbro/utils/dimensions.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 
 class StartWorkoutScreen extends StatefulWidget {
@@ -23,6 +23,23 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countUp,
   );
+  late final List<List<bool>> _isTrainingSetDone = List.generate(
+    widget.trainings.length,
+    (i) => List.generate(widget.trainings[i].numSets, (_) => false),
+  );
+
+  Color getFillColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+      MaterialState.selected,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Theme.of(context).primaryColor;
+    }
+    return Colors.grey;
+  }
 
   @override
   void initState() {
@@ -84,22 +101,22 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
       ),
       body: ListView.builder(
         itemCount: widget.trainings.length,
-        itemBuilder: (context, index) {
-          final training = widget.trainings[index];
+        itemBuilder: (context, trainingIndex) {
+          final training = widget.trainings[trainingIndex];
           final exercise = training.exercise;
           final numSets = training.numSets;
           final numReps = training.numReps;
           var tableRows = <TableRow>[];
-          for (var i = 0; i < numSets; i++) {
+          for (var setIndex = 0; setIndex < numSets; setIndex++) {
             tableRows.add(
               TableRow(
                 children: [
                   Center(
                     child: Text(
-                      '${i + 1}',
+                      '${setIndex + 1}',
                       style: const TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -107,8 +124,8 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                     child: Text(
                       '',
                       style: TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -116,15 +133,24 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                     child: Text(
                       '$numReps',
                       style: const TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Center(
                     child: Checkbox(
-                      value: false,
-                      onChanged: (bool? value) {},
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      fillColor:
+                          MaterialStateProperty.resolveWith(getFillColor),
+                      value: _isTrainingSetDone[trainingIndex][setIndex],
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isTrainingSetDone[trainingIndex][setIndex] = value!;
+                        });
+                      },
                     ),
                   ),
                 ],
