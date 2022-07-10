@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 
@@ -24,9 +25,15 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countUp,
   );
-  late final List<List<bool>> _isTrainingSetDone = List.generate(
+  late final List<TrainingResult> _trainingResults = List.generate(
     widget.trainings.length,
-    (i) => List.generate(widget.trainings[i].numSets, (_) => false),
+    (i) => TrainingResult(
+      widget.trainings[i].exercise,
+      List.generate(
+        widget.trainings[i].numSets,
+        (_) => TrainingSet(),
+      ),
+    ),
   );
 
   Color getFillColor(Set<MaterialState> states) {
@@ -125,8 +132,12 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                   Center(
                     child: TextField(
                       textAlign: TextAlign.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
+                        hintText: "0.0",
+                        hintStyle: TextStyle(
+                          color: Colors.grey[400],
+                        ),
                       ),
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
@@ -136,18 +147,40 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                           RegExp(r"^\d+\.?\d{0,3}"),
                         ),
                       ],
+                      onChanged: (value) {
+                        if (value == "") {
+                          _trainingResults[trainingIndex].sets[setIndex].kgs =
+                              null;
+                        } else {
+                          _trainingResults[trainingIndex].sets[setIndex].kgs =
+                              double.parse(value);
+                        }
+                      },
                     ),
                   ),
                   Center(
                     child: TextField(
                       textAlign: TextAlign.center,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         border: InputBorder.none,
+                        hintText: numReps.toString(),
+                        hintStyle: TextStyle(
+                          color: Colors.grey[400],
+                        ),
                       ),
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
+                      onChanged: (value) {
+                        if (value == "") {
+                          _trainingResults[trainingIndex].sets[setIndex].reps =
+                              null;
+                        } else {
+                          _trainingResults[trainingIndex].sets[setIndex].reps =
+                              int.parse(value);
+                        }
+                      },
                     ),
                   ),
                   Center(
@@ -157,10 +190,12 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                       ),
                       fillColor:
                           MaterialStateProperty.resolveWith(getFillColor),
-                      value: _isTrainingSetDone[trainingIndex][setIndex],
+                      value:
+                          _trainingResults[trainingIndex].sets[setIndex].done,
                       onChanged: (bool? value) {
                         setState(() {
-                          _isTrainingSetDone[trainingIndex][setIndex] = value!;
+                          _trainingResults[trainingIndex].sets[setIndex].done =
+                              value!;
                         });
                       },
                     ),
@@ -188,13 +223,18 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        decoration: const InputDecoration(
                           border: UnderlineInputBorder(),
                           hintText: 'Add notes...',
                         ),
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
+                        onChanged: (value) {
+                          setState(() {
+                            _trainingResults[trainingIndex].notes = value;
+                          });
+                        },
                       ),
                     ),
                     Table(
