@@ -57,6 +57,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Column(
           children: [

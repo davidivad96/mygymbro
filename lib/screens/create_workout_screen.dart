@@ -235,6 +235,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: BigText(
             text: widget.workout != null
