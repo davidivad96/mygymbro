@@ -52,13 +52,15 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         _trainingResults[i].sets[j].reps == null;
   }
 
+  void _saveTraining() {}
+
   void _onDiscard() async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(WorkoutsConstants.dialogDiscardWorkoutTitle),
+        title: const Text(WorkoutsConstants.dialogDiscardTrainingTitle),
         content: const Text(
-          WorkoutsConstants.dialogDiscardWorkoutContent,
+          WorkoutsConstants.dialogDiscardTrainingContent,
         ),
         actions: [
           TextButton(
@@ -79,6 +81,44 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
               WorkoutsConstants.dialogDiscard,
               style: TextStyle(
                 color: Theme.of(context).errorColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onSave() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(WorkoutsConstants.dialogSaveTrainingTitle),
+        content: const Text(
+          WorkoutsConstants.dialogSaveTrainingContent,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              WorkoutsConstants.dialogGoBack,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              _saveTraining();
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
+            },
+            child: Text(
+              WorkoutsConstants.dialogFinished,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),
@@ -146,7 +186,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: () => {},
+            onPressed: _onSave,
           ),
         ],
       ),

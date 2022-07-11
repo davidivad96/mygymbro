@@ -17,11 +17,15 @@ class WorkoutsConstants {
   static const dialogDeleteWorkoutTitle = "Deleting workout";
   static const dialogDeleteWorkoutContent =
       "This action cannot be undone. Are you sure you want to delete this workout?";
-  static const dialogDiscardWorkoutTitle = "Discard workout";
-  static const dialogDiscardWorkoutContent =
-      "Are you sure you want to discard this workout?";
+  static const dialogDiscardTrainingTitle = "Discard training";
+  static const dialogDiscardTrainingContent =
+      "Are you sure you want to discard this training?";
+  static const dialogSaveTrainingTitle = "Save training";
+  static const dialogSaveTrainingContent =
+      "Are you finished with this workout?";
   static const dialogDontSave = "Don't save";
   static const dialogDiscard = "Discard";
+  static const dialogFinished = "Yes, I'm finished!";
   static const dialogGoBack = "Go back";
   static const dialogNo = "No";
   static const dialogYes = "Yes";
