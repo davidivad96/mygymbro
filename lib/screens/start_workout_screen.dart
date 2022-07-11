@@ -107,7 +107,11 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
+      body: ListView.separated(
+        separatorBuilder: (context, index) => const Divider(
+          height: 15.0,
+          color: Colors.transparent,
+        ),
         itemCount: widget.trainings.length,
         itemBuilder: (context, trainingIndex) {
           final training = widget.trainings[trainingIndex];
