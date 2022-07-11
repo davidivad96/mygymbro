@@ -50,7 +50,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: Text(
-                  WorkoutsConstants.dialogNo,
+                  WorkoutsConstants.dialogGoBack,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                   ),
@@ -59,9 +59,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 child: Text(
-                  WorkoutsConstants.dialogYes,
+                  WorkoutsConstants.dialogDontSave,
                   style: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).errorColor,
                   ),
                 ),
               ),
@@ -302,6 +302,7 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                                 final Training item =
                                     _trainings.removeAt(oldIndex);
                                 _trainings.insert(newIndex, item);
+                                hasChanged = true;
                               });
                             },
                           )

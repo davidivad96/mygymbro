@@ -6,7 +6,7 @@ class WorkoutsConstants {
   static const title = "Workouts";
   static const createWorkout = "Create Workout";
   static const editWorkout = "Edit Workout";
-  static const dialogTitle = "Closing without saving";
+  static const dialogTitle = "Close without saving";
   static const dialogContent =
       "Are you sure you want to close without saving your changes?";
   static const dialogNoExercisesTitle = "You didn't select any exercises";
@@ -17,6 +17,12 @@ class WorkoutsConstants {
   static const dialogDeleteWorkoutTitle = "Deleting workout";
   static const dialogDeleteWorkoutContent =
       "This action cannot be undone. Are you sure you want to delete this workout?";
+  static const dialogDiscardWorkoutTitle = "Discard workout";
+  static const dialogDiscardWorkoutContent =
+      "Are you sure you want to discard this workout?";
+  static const dialogDontSave = "Don't save";
+  static const dialogDiscard = "Discard";
+  static const dialogGoBack = "Go back";
   static const dialogNo = "No";
   static const dialogYes = "Yes";
   static const dialogOk = "Ok";

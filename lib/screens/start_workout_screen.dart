@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
+import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/utils/dimensions.dart';
@@ -38,14 +39,52 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
 
   Color _getFillColor(Set<MaterialState> states) {
     if (states.contains(MaterialState.disabled)) {
-      return Colors.grey;
+      return Colors.grey.withOpacity(0.3);
     }
-    return Theme.of(context).primaryColor;
+    if (states.contains(MaterialState.selected)) {
+      return Theme.of(context).primaryColor;
+    }
+    return Colors.grey;
   }
 
   bool _isCheckboxDisabled(int i, int j) {
     return _trainingResults[i].sets[j].kgs == null ||
         _trainingResults[i].sets[j].reps == null;
+  }
+
+  void _onDiscard() async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(WorkoutsConstants.dialogDiscardWorkoutTitle),
+        content: const Text(
+          WorkoutsConstants.dialogDiscardWorkoutContent,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              WorkoutsConstants.dialogGoBack,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.popUntil(
+              context,
+              (route) => route.isFirst,
+            ),
+            child: Text(
+              WorkoutsConstants.dialogDiscard,
+              style: TextStyle(
+                color: Theme.of(context).errorColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -65,6 +104,10 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: _onDiscard,
+        ),
         title: Column(
           children: [
             BigText(text: widget.workoutName),
@@ -107,202 +150,207 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        separatorBuilder: (context, index) => const Divider(
-          height: 15.0,
-          color: Colors.transparent,
-        ),
-        itemCount: widget.trainings.length,
-        itemBuilder: (context, trainingIndex) {
-          final training = widget.trainings[trainingIndex];
-          final exercise = training.exercise;
-          final numSets = training.numSets;
-          final numReps = training.numReps;
-          var tableRows = <TableRow>[];
-          for (var setIndex = 0; setIndex < numSets; setIndex++) {
-            tableRows.add(
-              TableRow(
-                children: [
-                  Center(
-                    child: Text(
-                      '${setIndex + 1}',
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "0.0",
-                        hintStyle: TextStyle(
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                      ),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r"^\d+\.?\d{0,3}"),
-                        ),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          if (value == "") {
-                            _trainingResults[trainingIndex].sets[setIndex].kgs =
-                                null;
-                          } else {
-                            _trainingResults[trainingIndex].sets[setIndex].kgs =
-                                double.parse(value);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  Center(
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: numReps.toString(),
-                        hintStyle: TextStyle(
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          if (value == "") {
-                            _trainingResults[trainingIndex]
-                                .sets[setIndex]
-                                .reps = null;
-                          } else {
-                            _trainingResults[trainingIndex]
-                                .sets[setIndex]
-                                .reps = int.parse(value);
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                  Center(
-                    child: Checkbox(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      fillColor:
-                          MaterialStateProperty.resolveWith(_getFillColor),
-                      value:
-                          _trainingResults[trainingIndex].sets[setIndex].done,
-                      onChanged: _isCheckboxDisabled(trainingIndex, setIndex)
-                          ? null
-                          : (bool? value) {
-                              setState(() {
-                                _trainingResults[trainingIndex]
-                                    .sets[setIndex]
-                                    .done = value!;
-                              });
-                            },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-          return Material(
-            color: Theme.of(context).backgroundColor,
-            child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(Dimensions.cardPadding),
-                child: Column(
+      body: Container(
+        color: Theme.of(context).backgroundColor,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => const Divider(
+            height: 5.0,
+            color: Colors.transparent,
+          ),
+          itemCount: widget.trainings.length,
+          itemBuilder: (context, trainingIndex) {
+            final training = widget.trainings[trainingIndex];
+            final exercise = training.exercise;
+            final numSets = training.numSets;
+            final numReps = training.numReps;
+            var tableRows = <TableRow>[];
+            for (var setIndex = 0; setIndex < numSets; setIndex++) {
+              tableRows.add(
+                TableRow(
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
+                    Center(
                       child: Text(
-                        exercise.name,
+                        '${setIndex + 1}',
                         style: const TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w800,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+                    Center(
                       child: TextField(
-                        decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          hintText: 'Add notes...',
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "0.0",
+                          hintStyle: TextStyle(
+                            color: Colors.grey[400],
+                          ),
                         ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r"^\d+\.?\d{0,3}"),
+                          ),
+                        ],
                         onChanged: (value) {
                           setState(() {
-                            _trainingResults[trainingIndex].notes = value;
+                            if (value == "") {
+                              _trainingResults[trainingIndex]
+                                  .sets[setIndex]
+                                  .kgs = null;
+                            } else {
+                              _trainingResults[trainingIndex]
+                                  .sets[setIndex]
+                                  .kgs = double.parse(value);
+                            }
                           });
                         },
                       ),
                     ),
-                    Table(
-                      defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
-                      children: [
-                        const TableRow(
-                          children: [
-                            Center(
-                              child: Text(
-                                'SET',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                'KGS',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                'REPS',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            Center(
-                              child: Text(
-                                'DONE',
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
+                    Center(
+                      child: TextField(
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: numReps.toString(),
+                          hintStyle: TextStyle(
+                            color: Colors.grey[400],
+                          ),
                         ),
-                        ...tableRows,
-                      ],
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            if (value == "") {
+                              _trainingResults[trainingIndex]
+                                  .sets[setIndex]
+                                  .reps = null;
+                            } else {
+                              _trainingResults[trainingIndex]
+                                  .sets[setIndex]
+                                  .reps = int.parse(value);
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    Center(
+                      child: Checkbox(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        fillColor:
+                            MaterialStateProperty.resolveWith(_getFillColor),
+                        value:
+                            _trainingResults[trainingIndex].sets[setIndex].done,
+                        onChanged: _isCheckboxDisabled(trainingIndex, setIndex)
+                            ? null
+                            : (bool? value) {
+                                setState(() {
+                                  _trainingResults[trainingIndex]
+                                      .sets[setIndex]
+                                      .done = value!;
+                                });
+                              },
+                      ),
                     ),
                   ],
                 ),
+              );
+            }
+            return Material(
+              color: Theme.of(context).backgroundColor,
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.all(Dimensions.cardPadding),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          exercise.name,
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10.0, bottom: 20.0),
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            hintText: 'Add notes...',
+                          ),
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          onChanged: (value) {
+                            setState(() {
+                              _trainingResults[trainingIndex].notes = value;
+                            });
+                          },
+                        ),
+                      ),
+                      Table(
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
+                        children: [
+                          const TableRow(
+                            children: [
+                              Center(
+                                child: Text(
+                                  'SET',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  'KGS',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  'REPS',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              Center(
+                                child: Text(
+                                  'DONE',
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          ...tableRows,
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          );
-        },
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            );
+          },
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        ),
       ),
     );
   }
