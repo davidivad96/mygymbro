@@ -36,17 +36,16 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
     ),
   );
 
-  Color getFillColor(Set<MaterialState> states) {
-    const Set<MaterialState> interactiveStates = <MaterialState>{
-      MaterialState.pressed,
-      MaterialState.hovered,
-      MaterialState.focused,
-      MaterialState.selected,
-    };
-    if (states.any(interactiveStates.contains)) {
-      return Theme.of(context).primaryColor;
+  Color _getFillColor(Set<MaterialState> states) {
+    if (states.contains(MaterialState.disabled)) {
+      return Colors.grey;
     }
-    return Colors.grey;
+    return Theme.of(context).primaryColor;
+  }
+
+  bool _isCheckboxDisabled(int i, int j) {
+    return _trainingResults[i].sets[j].kgs == null ||
+        _trainingResults[i].sets[j].reps == null;
   }
 
   @override
@@ -148,13 +147,15 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                         ),
                       ],
                       onChanged: (value) {
-                        if (value == "") {
-                          _trainingResults[trainingIndex].sets[setIndex].kgs =
-                              null;
-                        } else {
-                          _trainingResults[trainingIndex].sets[setIndex].kgs =
-                              double.parse(value);
-                        }
+                        setState(() {
+                          if (value == "") {
+                            _trainingResults[trainingIndex].sets[setIndex].kgs =
+                                null;
+                          } else {
+                            _trainingResults[trainingIndex].sets[setIndex].kgs =
+                                double.parse(value);
+                          }
+                        });
                       },
                     ),
                   ),
@@ -173,13 +174,17 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                       onChanged: (value) {
-                        if (value == "") {
-                          _trainingResults[trainingIndex].sets[setIndex].reps =
-                              null;
-                        } else {
-                          _trainingResults[trainingIndex].sets[setIndex].reps =
-                              int.parse(value);
-                        }
+                        setState(() {
+                          if (value == "") {
+                            _trainingResults[trainingIndex]
+                                .sets[setIndex]
+                                .reps = null;
+                          } else {
+                            _trainingResults[trainingIndex]
+                                .sets[setIndex]
+                                .reps = int.parse(value);
+                          }
+                        });
                       },
                     ),
                   ),
@@ -189,15 +194,18 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                       fillColor:
-                          MaterialStateProperty.resolveWith(getFillColor),
+                          MaterialStateProperty.resolveWith(_getFillColor),
                       value:
                           _trainingResults[trainingIndex].sets[setIndex].done,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _trainingResults[trainingIndex].sets[setIndex].done =
-                              value!;
-                        });
-                      },
+                      onChanged: _isCheckboxDisabled(trainingIndex, setIndex)
+                          ? null
+                          : (bool? value) {
+                              setState(() {
+                                _trainingResults[trainingIndex]
+                                    .sets[setIndex]
+                                    .done = value!;
+                              });
+                            },
                     ),
                   ),
                 ],
