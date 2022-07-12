@@ -48,6 +48,12 @@ class WorkoutsConstants {
       "Your workout routines will appear here. To get started right away, create a new workout";
 }
 
+class HistoryConstants {
+  static const title = "History";
+  static const noHistoryTitle = "No history available";
+  static const noHistoryText = "Your history of workouts will appear here";
+}
+
 class ExercisesConstants {
   static const title = "Exercises";
   static const search = "Search";

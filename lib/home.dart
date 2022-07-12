@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:mygymbro/screens/exercises_screen.dart';
+import 'package:mygymbro/screens/history_screen.dart';
 import 'package:mygymbro/screens/graphs_screen.dart';
 import 'package:mygymbro/screens/workouts_screen.dart';
 import 'package:mygymbro/widgets/bottom_nav_bar.dart';
@@ -17,6 +18,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final pages = [
     const WorkoutsScreen(),
+    const HistoryScreen(),
     const ExercisesScreen(),
     const GraphsScreen(),
   ];
