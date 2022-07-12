@@ -10,7 +10,12 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 25.0, right: 25.0),
+      padding: EdgeInsets.fromLTRB(
+        Dimensions.screenPaddingHorizontal,
+        Dimensions.screenPaddingVertical,
+        Dimensions.screenPaddingHorizontal,
+        Dimensions.screenPaddingVertical,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,12 +37,14 @@ class HistoryScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
-                      Icons.history,
+                      Icons.fitness_center,
                     ),
                     const SizedBox(
                       height: 10.0,
                     ),
-                    const BigText(text: HistoryConstants.noHistoryTitle),
+                    const BigText(
+                      text: HistoryConstants.noHistoryTitle,
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),

@@ -124,31 +124,33 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                           });
                         },
                       )
-                    : SizedBox(
-                        width: Dimensions.centeredContentWidth,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.fitness_center,
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            const BigText(
-                              text: WorkoutsConstants.noWorkoutRoutinesTitle,
-                            ),
-                            const SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(
-                              WorkoutsConstants.noWorkoutRoutinesText,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.grey[500],
+                    : Center(
+                        child: SizedBox(
+                          width: Dimensions.centeredContentWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.fitness_center,
                               ),
-                            ),
-                          ],
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              const BigText(
+                                text: WorkoutsConstants.noWorkoutRoutinesTitle,
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                WorkoutsConstants.noWorkoutRoutinesText,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey[500],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
               ),
