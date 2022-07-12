@@ -90,12 +90,21 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   }
 
   void _onSave() async {
+    final bool noWorkDone = _trainingResults.every(
+      (trainingResult) => trainingResult.sets.every((set) => set.done == false),
+    );
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(WorkoutsConstants.dialogSaveTrainingTitle),
-        content: const Text(
-          WorkoutsConstants.dialogSaveTrainingContent,
+        title: Text(
+          noWorkDone
+              ? WorkoutsConstants.dialogSaveTrainingNoWorkDoneTitle
+              : WorkoutsConstants.dialogSaveTrainingTitle,
+        ),
+        content: Text(
+          noWorkDone
+              ? WorkoutsConstants.dialogSaveTrainingNoWorkDoneContent
+              : WorkoutsConstants.dialogSaveTrainingContent,
         ),
         actions: [
           TextButton(
@@ -107,21 +116,22 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
               ),
             ),
           ),
-          TextButton(
-            onPressed: () {
-              _saveTraining();
-              Navigator.popUntil(
-                context,
-                (route) => route.isFirst,
-              );
-            },
-            child: Text(
-              WorkoutsConstants.dialogFinished,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
+          if (!noWorkDone)
+            TextButton(
+              onPressed: () {
+                _saveTraining();
+                Navigator.popUntil(
+                  context,
+                  (route) => route.isFirst,
+                );
+              },
+              child: Text(
+                WorkoutsConstants.dialogFinished,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

@@ -23,6 +23,9 @@ class WorkoutsConstants {
   static const dialogSaveTrainingTitle = "Save training";
   static const dialogSaveTrainingContent =
       "Are you finished with this workout?";
+  static const dialogSaveTrainingNoWorkDoneTitle = "No work done";
+  static const dialogSaveTrainingNoWorkDoneContent =
+      "You didn't do any exercises. Must do at least one set to be able to finish";
   static const dialogDontSave = "Don't save";
   static const dialogDiscard = "Discard";
   static const dialogFinished = "Yes, I'm finished!";
