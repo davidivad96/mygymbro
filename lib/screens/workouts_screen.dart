@@ -129,6 +129,12 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            const Icon(
+                              Icons.fitness_center,
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
                             const BigText(
                               text: WorkoutsConstants.noWorkoutRoutinesTitle,
                             ),
