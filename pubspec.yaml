@@ -38,6 +38,7 @@ dependencies:
   flutter_picker: ^2.0.3
   stop_watch_timer: ^1.5.0
   firebase_core: ^1.19.2
+  firebase_database: ^9.0.19
 
 dev_dependencies:
   flutter_test:
