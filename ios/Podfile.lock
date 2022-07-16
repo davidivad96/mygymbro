@@ -1,8 +1,15 @@
 PODS:
   - Firebase/CoreOnly (9.2.0):
     - FirebaseCore (= 9.2.0)
+  - Firebase/Database (9.2.0):
+    - Firebase/CoreOnly
+    - FirebaseDatabase (~> 9.2.0)
   - firebase_core (1.19.2):
     - Firebase/CoreOnly (= 9.2.0)
+    - Flutter
+  - firebase_database (9.0.19):
+    - Firebase/Database (= 9.2.0)
+    - firebase_core
     - Flutter
   - FirebaseCore (9.2.0):
     - FirebaseCoreDiagnostics (~> 9.0)
@@ -16,6 +23,9 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseCoreInternal (9.3.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - FirebaseDatabase (9.2.0):
+    - FirebaseCore (~> 9.0)
+    - leveldb-library (~> 1.22)
   - Flutter (1.0.0)
   - GoogleDataTransport (9.1.4):
     - GoogleUtilities/Environment (~> 7.7)
@@ -26,6 +36,7 @@ PODS:
   - GoogleUtilities/Logger (7.7.0):
     - GoogleUtilities/Environment
   - "GoogleUtilities/NSData+zlib (7.7.0)"
+  - leveldb-library (1.22.1)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -35,6 +46,7 @@ PODS:
 
 DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - Flutter (from `Flutter`)
 
 SPEC REPOS:
@@ -43,29 +55,36 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreInternal
+    - FirebaseDatabase
     - GoogleDataTransport
     - GoogleUtilities
+    - leveldb-library
     - nanopb
     - PromisesObjC
 
 EXTERNAL SOURCES:
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_database:
+    :path: ".symlinks/plugins/firebase_database/ios"
   Flutter:
     :path: Flutter
 
 SPEC CHECKSUMS:
   Firebase: 4ba896cb8e5105d4b9e247e1c1b6222b548df55a
   firebase_core: ada8be870601fe3c2684dae2356f634189bd598f
+  firebase_database: 1bbc8cb640da163f843ffccf46cc45834fa2aa89
   FirebaseCore: 0e27f2a15d8f7b7ef11e7d93e23b1cbab55d748c
   FirebaseCoreDiagnostics: 060eb57cc56dfaf40b1b1b5874a5c17c41ce79f8
   FirebaseCoreInternal: 635d1c9a612a6502b6377a0c92af83758076ffff
+  FirebaseDatabase: 0a888e4bcaa8edc43701597daab336201fb47cc9
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
+  leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
 
 COCOAPODS: 1.11.3
