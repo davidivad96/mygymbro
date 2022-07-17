@@ -22,50 +22,36 @@ class WorkoutsScreen extends StatefulWidget {
 
 class _WorkoutsScreenState extends State<WorkoutsScreen> {
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
-  final List<Workout> _workouts = [];
+  List<Workout> _workouts = [];
 
   void _addWorkout(String name, List<Training> trainings) async {
     String id = const Uuid().v4();
-    // set up listeners
-    _dbRef.child('workouts/$id').onValue.listen((event) {
-      if (event.snapshot.value == null) {
-        setState(() {
-          _workouts.removeWhere((workout) => workout.id == id);
-        });
-        return;
-      }
-      int index = _workouts.indexWhere((workout) => workout.id == id);
-      Workout workout =
-          Workout.fromJson(jsonDecode(jsonEncode(event.snapshot.value)));
-      if (index != -1) {
-        setState(() {
-          _workouts[index] = workout;
-        });
-        return;
-      }
-      setState(() {
-        _workouts.add(workout);
-      });
-    });
+    Workout workout = Workout(
+      id,
+      name,
+      trainings,
+    );
     // add workout to database
-    _dbRef.child('workouts/$id').set(
-          Workout(
-            id,
-            name,
-            trainings,
-          ).toJson(),
-        );
+    _dbRef.child('workouts/$id').set(workout.toJson());
+    // add workout to state
+    setState(() {
+      _workouts.add(workout);
+    });
   }
 
   void _editWorkout(String id, String name, List<Training> trainings) {
+    Workout workout = Workout(
+      id,
+      name,
+      trainings,
+    );
     // update workout in database
-    _dbRef.child('workouts/$id').set(
-          Workout(
-            id,
-            name,
-            trainings,
-          ).toJson(),
-        );
+    _dbRef.child('workouts/$id').set(workout.toJson());
+    // update workout in state
+    setState(() {
+      int index = _workouts.indexWhere((workout) => workout.id == id);
+      _workouts[index] = workout;
+    });
   }
 
   void _deleteWorkout(String id) async {
@@ -90,6 +76,10 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
             onPressed: () {
               // delete workout from database
               _dbRef.child('workouts/$id').remove();
+              // delete workout from state
+              setState(() {
+                _workouts.removeWhere((workout) => workout.id == id);
+              });
               Navigator.pop(context);
             },
             child: Text(
@@ -102,6 +92,25 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
         ],
       ),
     );
+  }
+
+  _initWorkouts() async {
+    final snapshot = await _dbRef.child('workouts').get();
+    if (snapshot.exists) {
+      final workouts =
+          jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
+      setState(() {
+        _workouts = workouts.values
+            .map((workout) => Workout.fromJson(workout))
+            .toList();
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initWorkouts();
   }
 
   @override
