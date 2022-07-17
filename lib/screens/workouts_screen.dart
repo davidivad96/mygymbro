@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -21,6 +22,7 @@ class WorkoutsScreen extends StatefulWidget {
 }
 
 class _WorkoutsScreenState extends State<WorkoutsScreen> {
+  bool _isLoading = true;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("workouts");
   List<Workout> _workouts = [];
 
@@ -99,6 +101,9 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
   }
 
   _initWorkouts() async {
+    setState(() {
+      _isLoading = true;
+    });
     final snapshot = await _dbRef.get();
     if (snapshot.exists) {
       final workouts = snapshot.children;
@@ -111,6 +116,12 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
             )
             .toList();
       });
+      Future.delayed(
+        const Duration(milliseconds: 1000),
+        () => setState(() {
+          _isLoading = false;
+        }),
+      );
     }
   }
 
@@ -143,8 +154,9 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                margin:
-                    EdgeInsets.only(bottom: Dimensions.screenTitleMarginBottom),
+                margin: EdgeInsets.only(
+                  bottom: Dimensions.screenTitleMarginBottom,
+                ),
                 child: const Text(
                   WorkoutsConstants.title,
                   style: TextStyle(
@@ -154,78 +166,86 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                 ),
               ),
               Expanded(
-                child: _workouts.isNotEmpty
-                    ? ReorderableListView.builder(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.vertical,
-                        itemCount: _workouts.length,
-                        itemBuilder: (context, index) {
-                          Workout workout = _workouts[index];
-                          return Container(
-                            key: Key(workout.id),
-                            constraints: BoxConstraints(
-                              minHeight: Dimensions.cardMinHeight,
-                            ),
-                            child: WorkoutCard(
-                              workout: workout,
-                              editWorkout: (name, training) => _editWorkout(
-                                workout.id,
-                                index,
-                                name,
-                                training,
-                              ),
-                              deleteWorkout: () => _deleteWorkout(index),
-                            ),
-                          );
-                        },
-                        onReorder: (int oldIndex, int newIndex) {
-                          if (newIndex > oldIndex) {
-                            newIndex -= 1;
-                          }
-                          List<Workout> workouts = List.from(_workouts);
-                          Workout item = workouts.removeAt(oldIndex);
-                          workouts.insert(newIndex, item);
-                          // reorder workouts in db
-                          _dbRef.set(
-                            workouts
-                                .map((workout) => workout.toJson())
-                                .toList(),
-                          );
-                          // reorder workouts in state
-                          setState(() {
-                            _workouts = workouts;
-                          });
-                        },
-                      )
-                    : Center(
-                        child: SizedBox(
-                          width: Dimensions.centeredContentWidth,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.fitness_center,
-                              ),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              const BigText(
-                                text: WorkoutsConstants.noWorkoutRoutinesTitle,
-                              ),
-                              const SizedBox(
-                                height: 10.0,
-                              ),
-                              Text(
-                                WorkoutsConstants.noWorkoutRoutinesText,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.grey[500],
-                                ),
-                              ),
-                            ],
-                          ),
+                child: _isLoading
+                    ? Center(
+                        child: LoadingAnimationWidget.horizontalRotatingDots(
+                          color: Theme.of(context).primaryColor,
+                          size: 50.0,
                         ),
-                      ),
+                      )
+                    : _workouts.isNotEmpty
+                        ? ReorderableListView.builder(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.vertical,
+                            itemCount: _workouts.length,
+                            itemBuilder: (context, index) {
+                              Workout workout = _workouts[index];
+                              return Container(
+                                key: Key(workout.id),
+                                constraints: BoxConstraints(
+                                  minHeight: Dimensions.cardMinHeight,
+                                ),
+                                child: WorkoutCard(
+                                  workout: workout,
+                                  editWorkout: (name, training) => _editWorkout(
+                                    workout.id,
+                                    index,
+                                    name,
+                                    training,
+                                  ),
+                                  deleteWorkout: () => _deleteWorkout(index),
+                                ),
+                              );
+                            },
+                            onReorder: (int oldIndex, int newIndex) {
+                              if (newIndex > oldIndex) {
+                                newIndex -= 1;
+                              }
+                              List<Workout> workouts = List.from(_workouts);
+                              Workout item = workouts.removeAt(oldIndex);
+                              workouts.insert(newIndex, item);
+                              // reorder workouts in db
+                              _dbRef.set(
+                                workouts
+                                    .map((workout) => workout.toJson())
+                                    .toList(),
+                              );
+                              // reorder workouts in state
+                              setState(() {
+                                _workouts = workouts;
+                              });
+                            },
+                          )
+                        : Center(
+                            child: SizedBox(
+                              width: Dimensions.centeredContentWidth,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.fitness_center,
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  const BigText(
+                                    text: WorkoutsConstants
+                                        .noWorkoutRoutinesTitle,
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    WorkoutsConstants.noWorkoutRoutinesText,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
               ),
             ],
           ),
