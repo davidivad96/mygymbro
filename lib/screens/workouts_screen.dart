@@ -21,40 +21,44 @@ class WorkoutsScreen extends StatefulWidget {
 }
 
 class _WorkoutsScreenState extends State<WorkoutsScreen> {
-  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("workouts");
   List<Workout> _workouts = [];
 
   void _addWorkout(String name, List<Training> trainings) async {
     String id = const Uuid().v4();
+    // add workout to db
     Workout workout = Workout(
       id,
       name,
       trainings,
     );
-    // add workout to database
-    _dbRef.child('workouts/$id').set(workout.toJson());
+    _dbRef.child(_workouts.length.toString()).set(workout.toJson());
     // add workout to state
     setState(() {
       _workouts.add(workout);
     });
   }
 
-  void _editWorkout(String id, String name, List<Training> trainings) {
+  void _editWorkout(
+    String id,
+    int index,
+    String name,
+    List<Training> trainings,
+  ) {
     Workout workout = Workout(
       id,
       name,
       trainings,
     );
-    // update workout in database
-    _dbRef.child('workouts/$id').set(workout.toJson());
+    // update workout in db
+    _dbRef.child(index.toString()).set(workout.toJson());
     // update workout in state
     setState(() {
-      int index = _workouts.indexWhere((workout) => workout.id == id);
       _workouts[index] = workout;
     });
   }
 
-  void _deleteWorkout(String id) async {
+  void _deleteWorkout(int index) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -74,11 +78,11 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
           ),
           TextButton(
             onPressed: () {
-              // delete workout from database
-              _dbRef.child('workouts/$id').remove();
+              // delete workout from db
+              _dbRef.child(index.toString()).remove();
               // delete workout from state
               setState(() {
-                _workouts.removeWhere((workout) => workout.id == id);
+                _workouts.removeAt(index);
               });
               Navigator.pop(context);
             },
@@ -95,13 +99,16 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
   }
 
   _initWorkouts() async {
-    final snapshot = await _dbRef.child('workouts').get();
+    final snapshot = await _dbRef.get();
     if (snapshot.exists) {
-      final workouts =
-          jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>;
+      final workouts = snapshot.children;
       setState(() {
-        _workouts = workouts.values
-            .map((workout) => Workout.fromJson(workout))
+        _workouts = workouts
+            .map(
+              (snapshot) => Workout.fromJson(
+                jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>,
+              ),
+            )
             .toList();
       });
     }
@@ -163,20 +170,30 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                               workout: workout,
                               editWorkout: (name, training) => _editWorkout(
                                 workout.id,
+                                index,
                                 name,
                                 training,
                               ),
-                              deleteWorkout: () => _deleteWorkout(workout.id),
+                              deleteWorkout: () => _deleteWorkout(index),
                             ),
                           );
                         },
                         onReorder: (int oldIndex, int newIndex) {
+                          if (newIndex > oldIndex) {
+                            newIndex -= 1;
+                          }
+                          List<Workout> workouts = List.from(_workouts);
+                          Workout item = workouts.removeAt(oldIndex);
+                          workouts.insert(newIndex, item);
+                          // reorder workouts in db
+                          _dbRef.set(
+                            workouts
+                                .map((workout) => workout.toJson())
+                                .toList(),
+                          );
+                          // reorder workouts in state
                           setState(() {
-                            if (newIndex > oldIndex) {
-                              newIndex -= 1;
-                            }
-                            final Workout item = _workouts.removeAt(oldIndex);
-                            _workouts.insert(newIndex, item);
+                            _workouts = workouts;
                           });
                         },
                       )
