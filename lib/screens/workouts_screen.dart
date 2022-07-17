@@ -146,7 +146,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                         itemBuilder: (context, index) {
                           Workout workout = _workouts[index];
                           return Container(
-                            key: Key(workout.name),
+                            key: Key(workout.id),
                             constraints: BoxConstraints(
                               minHeight: Dimensions.cardMinHeight,
                             ),
