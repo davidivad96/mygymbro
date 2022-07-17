@@ -137,6 +137,10 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
     );
   }
 
+  _disposeStopWatchTimer() async {
+    await _stopWatchTimer.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -145,7 +149,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
 
   @override
   void dispose() async {
-    await _stopWatchTimer.dispose();
+    _disposeStopWatchTimer();
     super.dispose();
   }
 
