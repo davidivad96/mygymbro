@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
@@ -16,21 +21,54 @@ class WorkoutsScreen extends StatefulWidget {
 }
 
 class _WorkoutsScreenState extends State<WorkoutsScreen> {
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   final List<Workout> _workouts = [];
 
-  void _addWorkout(String name, List<Training> trainings) {
-    setState(() {
-      _workouts.add(Workout(name, trainings));
+  void _addWorkout(String name, List<Training> trainings) async {
+    String id = const Uuid().v4();
+    // set up listeners
+    _dbRef.child('workouts/$id').onValue.listen((event) {
+      if (event.snapshot.value == null) {
+        setState(() {
+          _workouts.removeWhere((workout) => workout.id == id);
+        });
+        return;
+      }
+      int index = _workouts.indexWhere((workout) => workout.id == id);
+      Workout workout =
+          Workout.fromJson(jsonDecode(jsonEncode(event.snapshot.value)));
+      if (index != -1) {
+        setState(() {
+          _workouts[index] = workout;
+        });
+        return;
+      }
+      setState(() {
+        _workouts.add(workout);
+      });
     });
+    // add workout to database
+    _dbRef.child('workouts/$id').set(
+          Workout(
+            id,
+            name,
+            trainings,
+          ).toJson(),
+        );
   }
 
-  void _editWorkout(int index, String name, List<Training> trainings) {
-    setState(() {
-      _workouts[index] = Workout(name, trainings);
-    });
+  void _editWorkout(String id, String name, List<Training> trainings) {
+    // update workout in database
+    _dbRef.child('workouts/$id').set(
+          Workout(
+            id,
+            name,
+            trainings,
+          ).toJson(),
+        );
   }
 
-  void _deleteWorkout(int index) async {
+  void _deleteWorkout(String id) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -50,9 +88,8 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
           ),
           TextButton(
             onPressed: () {
-              setState(() {
-                _workouts.removeAt(index);
-              });
+              // delete workout from database
+              _dbRef.child('workouts/$id').remove();
               Navigator.pop(context);
             },
             child: Text(
@@ -65,6 +102,12 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _dbRef.onDisconnect();
+    super.dispose();
   }
 
   @override
@@ -101,16 +144,20 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                         scrollDirection: Axis.vertical,
                         itemCount: _workouts.length,
                         itemBuilder: (context, index) {
+                          Workout workout = _workouts[index];
                           return Container(
-                            key: Key(_workouts[index].name),
+                            key: Key(workout.name),
                             constraints: BoxConstraints(
                               minHeight: Dimensions.cardMinHeight,
                             ),
                             child: WorkoutCard(
-                              workout: _workouts[index],
-                              editWorkout: (name, training) =>
-                                  _editWorkout(index, name, training),
-                              deleteWorkout: () => _deleteWorkout(index),
+                              workout: workout,
+                              editWorkout: (name, training) => _editWorkout(
+                                workout.id,
+                                name,
+                                training,
+                              ),
+                              deleteWorkout: () => _deleteWorkout(workout.id),
                             ),
                           );
                         },
