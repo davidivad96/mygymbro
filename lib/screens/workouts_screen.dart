@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:uuid/uuid.dart';
@@ -11,6 +9,7 @@ import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/utils/functions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/workout_card.dart';
 
@@ -110,9 +109,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
       setState(() {
         _workouts = workouts
             .map(
-              (snapshot) => Workout.fromJson(
-                jsonDecode(jsonEncode(snapshot.value)) as Map<String, dynamic>,
-              ),
+              (snapshot) => Workout.fromJson(transformSnapshot(snapshot.value)),
             )
             .toList();
       });
