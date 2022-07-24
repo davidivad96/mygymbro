@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:mygymbro/constants.dart';
-import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/history.dart';
-import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/utils/functions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/history_card.dart';
 
@@ -16,31 +18,44 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  final List<History> _histories = [
-    History(
-      "abcdefghij",
-      "Morning workout",
-      4120,
-      DateTime.now(),
-      [
-        TrainingResult(
-          exercises[7],
-          [TrainingSet(2.0, 5), TrainingSet(3.0, 4), TrainingSet(5.0, 2)],
-          "This was very very hard...",
-        ),
-        TrainingResult(
-          exercises[34],
-          [TrainingSet(6.0, 10)],
-          "",
-        ),
-        TrainingResult(
-          exercises[40],
-          [TrainingSet(1.0, 1)],
-          "Easy!",
-        )
-      ],
-    )
-  ];
+  bool _isLoading = true;
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("histories");
+  List<History> _histories = [];
+
+  _initHistories() async {
+    setState(() {
+      _isLoading = true;
+    });
+    final snapshot = await _dbRef.get();
+    if (snapshot.exists) {
+      final histories = snapshot.children;
+      setState(() {
+        _histories = histories
+            .map(
+              (snapshot) => History.fromJson(transformSnapshot(snapshot.value)),
+            )
+            .toList();
+      });
+    }
+    Future.delayed(
+      const Duration(milliseconds: 1000),
+      () => setState(() {
+        _isLoading = false;
+      }),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initHistories();
+  }
+
+  @override
+  void dispose() {
+    _dbRef.onDisconnect();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,51 +80,58 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           ),
           Expanded(
-            child: _histories.isNotEmpty
-                ? ListView.builder(
-                    itemCount: _histories.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      History history = _histories[index];
-                      return Container(
-                        key: Key(history.id),
-                        constraints: BoxConstraints(
-                          minHeight: Dimensions.cardMinHeight,
-                        ),
-                        child: HistoryCard(
-                          history: history,
-                        ),
-                      );
-                    },
-                  )
-                : Center(
-                    child: SizedBox(
-                      width: Dimensions.centeredContentWidth,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.fitness_center,
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const BigText(
-                            text: HistoryConstants.noHistoryTitle,
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            HistoryConstants.noHistoryText,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ],
-                      ),
+            child: _isLoading
+                ? Center(
+                    child: LoadingAnimationWidget.horizontalRotatingDots(
+                      color: Theme.of(context).primaryColor,
+                      size: 50.0,
                     ),
-                  ),
+                  )
+                : _histories.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: _histories.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          History history = _histories[index];
+                          return Container(
+                            key: Key(history.id),
+                            constraints: BoxConstraints(
+                              minHeight: Dimensions.cardMinHeight,
+                            ),
+                            child: HistoryCard(
+                              history: history,
+                            ),
+                          );
+                        },
+                      )
+                    : Center(
+                        child: SizedBox(
+                          width: Dimensions.centeredContentWidth,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.fitness_center,
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              const BigText(
+                                text: HistoryConstants.noHistoryTitle,
+                              ),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
+                              Text(
+                                HistoryConstants.noHistoryText,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey[500],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
           ),
         ],
       ),

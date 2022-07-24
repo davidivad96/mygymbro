@@ -10,7 +10,7 @@ History _$HistoryFromJson(Map<String, dynamic> json) => History(
       json['id'] as String,
       json['workoutName'] as String,
       json['duration'] as int,
-      DateTime.parse(json['date'] as String),
+      json['date'] as String,
       (json['trainingResults'] as List<dynamic>)
           .map((e) => TrainingResult.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -20,7 +20,7 @@ Map<String, dynamic> _$HistoryToJson(History instance) => <String, dynamic>{
       'id': instance.id,
       'workoutName': instance.workoutName,
       'duration': instance.duration,
-      'date': instance.date.toIso8601String(),
+      'date': instance.date,
       'trainingResults':
           instance.trainingResults.map((e) => e.toJson()).toList(),
     };

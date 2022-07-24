@@ -41,7 +41,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                     widget.workout.name,
                     style: const TextStyle(
                       fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),

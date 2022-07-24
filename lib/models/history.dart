@@ -9,7 +9,7 @@ class History {
   final String id;
   final String workoutName;
   final int duration;
-  final DateTime date;
+  final String date;
   final List<TrainingResult> trainingResults;
 
   History(

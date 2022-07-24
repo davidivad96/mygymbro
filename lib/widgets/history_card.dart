@@ -35,7 +35,7 @@ class _HistoryCardState extends State<HistoryCard> {
                     widget.history.workoutName,
                     style: const TextStyle(
                       fontSize: 18.0,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -66,7 +66,7 @@ class _HistoryCardState extends State<HistoryCard> {
             ExpansionTile(
               tilePadding: EdgeInsets.zero,
               title: Text(
-                formatDate(widget.history.date).toUpperCase(),
+                widget.history.date,
                 style: TextStyle(
                   fontSize: 12.0,
                   color: Colors.grey[500],
@@ -86,45 +86,51 @@ class _HistoryCardState extends State<HistoryCard> {
                   color: Colors.grey,
                 ),
                 for (int i = 0; i < widget.history.trainingResults.length; i++)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(widget.history.trainingResults[i].exercise.name),
-                      const SizedBox(height: 6.0),
-                      if (widget.history.trainingResults[i].notes != "") ...[
+                  if (widget.history.trainingResults[i].sets
+                      .any((set) => set.done == true))
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
                         Text(
-                          widget.history.trainingResults[i].notes,
-                          style: const TextStyle(
-                            fontSize: 12.0,
-                            fontStyle: FontStyle.italic,
-                          ),
+                          widget.history.trainingResults[i].exercise.name,
+                          style: const TextStyle(fontSize: 17.0),
                         ),
                         const SizedBox(height: 6.0),
-                      ],
-                      for (int j = 0;
-                          j < widget.history.trainingResults[i].sets.length;
-                          j++)
-                        Row(
-                          children: [
-                            Badge(
-                              badgeColor: Theme.of(context).primaryColor,
-                              badgeContent: Text(
-                                (j + 1).toString(),
-                                style: TextStyle(
-                                  color: Theme.of(context).highlightColor,
-                                  fontSize: 12.0,
+                        if (widget.history.trainingResults[i].notes != "") ...[
+                          Text(
+                            widget.history.trainingResults[i].notes,
+                            style: const TextStyle(
+                              fontSize: 12.0,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                          const SizedBox(height: 6.0),
+                        ],
+                        for (int j = 0;
+                            j < widget.history.trainingResults[i].sets.length;
+                            j++)
+                          if (widget.history.trainingResults[i].sets[j].done)
+                            Row(
+                              children: [
+                                Badge(
+                                  badgeColor: Theme.of(context).primaryColor,
+                                  badgeContent: Text(
+                                    (j + 1).toString(),
+                                    style: TextStyle(
+                                      color: Theme.of(context).highlightColor,
+                                      fontSize: 12.0,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(width: 6.0),
+                                Text(
+                                  "${widget.history.trainingResults[i].sets[j].reps} reps x ${widget.history.trainingResults[i].sets[j].kgs} kgs",
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 6.0),
-                            Text(
-                              "${widget.history.trainingResults[i].sets[j].reps} reps x ${widget.history.trainingResults[i].sets[j].kgs}kgs",
-                            ),
-                          ],
-                        ),
-                      const SizedBox(height: 20.0),
-                    ],
-                  ),
+                        const SizedBox(height: 15.0),
+                      ],
+                    ),
               ],
             ),
           ],

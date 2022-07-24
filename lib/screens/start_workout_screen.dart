@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:uuid/uuid.dart';
+
+import 'package:firebase_database/firebase_database.dart';
 
 import 'package:mygymbro/constants.dart';
+import 'package:mygymbro/models/history.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/utils/functions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 
 class StartWorkoutScreen extends StatefulWidget {
@@ -23,6 +28,7 @@ class StartWorkoutScreen extends StatefulWidget {
 }
 
 class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("histories");
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countUp,
   );
@@ -54,7 +60,27 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         (j == 0 ? false : _trainingResults[i].sets[j - 1].done == false);
   }
 
-  void _saveTraining() {}
+  void _saveTraining() async {
+    String id = const Uuid().v4();
+    final history = History(
+      id,
+      widget.workoutName,
+      int.parse(
+        StopWatchTimer.getDisplayTime(
+          _stopWatchTimer.rawTime.value,
+          hours: false,
+          minute: false,
+          second: true,
+          milliSecond: false,
+        ),
+      ),
+      formatDate(DateTime.now()),
+      _trainingResults,
+    );
+    _dbRef.get().then((snapshot) {
+      _dbRef.child(snapshot.children.length.toString()).set(history.toJson());
+    });
+  }
 
   void _onDiscard() async {
     await showDialog(

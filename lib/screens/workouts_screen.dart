@@ -21,8 +21,8 @@ class WorkoutsScreen extends StatefulWidget {
 }
 
 class _WorkoutsScreenState extends State<WorkoutsScreen> {
-  bool _isLoading = true;
   final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("workouts");
+  bool _isLoading = true;
   List<Workout> _workouts = [];
 
   void _addWorkout(String name, List<Training> trainings) async {
@@ -113,13 +113,13 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
             )
             .toList();
       });
-      Future.delayed(
-        const Duration(milliseconds: 1000),
-        () => setState(() {
-          _isLoading = false;
-        }),
-      );
     }
+    Future.delayed(
+      const Duration(milliseconds: 1000),
+      () => setState(() {
+        _isLoading = false;
+      }),
+    );
   }
 
   @override
