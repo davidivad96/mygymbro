@@ -80,7 +80,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              WorkoutsConstants.dialogNo,
+              GeneralConstants.dialogNo,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
               ),
@@ -97,7 +97,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
               Navigator.pop(context);
             },
             child: Text(
-              WorkoutsConstants.dialogYes,
+              GeneralConstants.dialogYes,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
               ),

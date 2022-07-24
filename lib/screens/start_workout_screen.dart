@@ -65,7 +65,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              WorkoutsConstants.dialogGoBack,
+              GeneralConstants.dialogGoBack,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
               ),
@@ -77,7 +77,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
               (route) => route.isFirst,
             ),
             child: Text(
-              WorkoutsConstants.dialogDiscard,
+              GeneralConstants.dialogDiscard,
               style: TextStyle(
                 color: Theme.of(context).errorColor,
               ),
@@ -109,7 +109,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              WorkoutsConstants.dialogGoBack,
+              GeneralConstants.dialogGoBack,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
               ),
@@ -139,7 +139,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                 );
               },
               child: Text(
-                WorkoutsConstants.dialogFinished,
+                GeneralConstants.dialogFinished,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                 ),

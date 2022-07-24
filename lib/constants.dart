@@ -2,15 +2,24 @@ class GeneralConstants {
   static const appName = 'MyGymBro';
   static const edit = "Edit";
   static const delete = "Delete";
+  static const dialogNo = "No";
+  static const dialogYes = "Yes";
+  static const dialogOk = "Ok";
+  static const save = "Save";
+  static const cancel = "Cancel";
+  static const dialogCloseWithoutSavingTitle = "Close without saving";
+  static const dialogCloseWithoutSavingContent =
+      "Are you sure you want to close without saving your changes?";
+  static const dialogDontSave = "Don't save";
+  static const dialogDiscard = "Discard";
+  static const dialogFinished = "Yes, I'm finished!";
+  static const dialogGoBack = "Go back";
 }
 
 class WorkoutsConstants {
   static const title = "Workouts";
   static const createWorkout = "Create Workout";
   static const editWorkout = "Edit Workout";
-  static const dialogTitle = "Close without saving";
-  static const dialogContent =
-      "Are you sure you want to close without saving your changes?";
   static const dialogNoExercisesTitle = "You didn't select any exercises";
   static const dialogNoExercisesContent = "Please select at least one exercise";
   static const dialogNoWorkoutNameTitle = "You didn't enter a name";
@@ -28,18 +37,9 @@ class WorkoutsConstants {
   static const dialogSaveTrainingNoWorkDoneTitle = "No work done";
   static const dialogSaveTrainingNoWorkDoneContent =
       "You didn't do any exercises. Must do at least one set to be able to finish";
-  static const dialogDontSave = "Don't save";
-  static const dialogDiscard = "Discard";
-  static const dialogFinished = "Yes, I'm finished!";
-  static const dialogGoBack = "Go back";
-  static const dialogNo = "No";
-  static const dialogYes = "Yes";
-  static const dialogOk = "Ok";
   static const workoutNameHintText = "Workout name";
   static const workoutInitialName = "Morning workout";
   static const addExercise = "Add an exercise";
-  static const save = "Save";
-  static const cancel = "Cancel";
   static const start = "Start";
   static const noExercisesText =
       "Get started by adding exercises to your workout routine";
@@ -52,6 +52,9 @@ class HistoryConstants {
   static const title = "History";
   static const noHistoryTitle = "No history available";
   static const noHistoryText = "Your history of workouts will appear here";
+  static const dialogDeleteTrainingTitle = "Deleting training";
+  static const dialogDeleteTrainingContent =
+      "This action cannot be undone. Are you sure you want to delete this training?";
 }
 
 class ExercisesConstants {

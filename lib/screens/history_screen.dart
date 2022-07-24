@@ -41,15 +41,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(WorkoutsConstants.dialogDeleteWorkoutTitle),
+        title: const Text(HistoryConstants.dialogDeleteTrainingTitle),
         content: const Text(
-          WorkoutsConstants.dialogDeleteWorkoutContent,
+          HistoryConstants.dialogDeleteTrainingContent,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              WorkoutsConstants.dialogNo,
+              GeneralConstants.dialogNo,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
               ),
@@ -61,7 +61,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               Navigator.pop(context);
             },
             child: Text(
-              WorkoutsConstants.dialogYes,
+              GeneralConstants.dialogYes,
               style: TextStyle(
                 color: Theme.of(context).primaryColor,
               ),

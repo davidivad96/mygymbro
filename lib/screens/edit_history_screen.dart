@@ -32,15 +32,15 @@ class _EditHistoryScreenState extends State<EditHistoryScreen> {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text(WorkoutsConstants.dialogTitle),
+            title: const Text(GeneralConstants.dialogCloseWithoutSavingTitle),
             content: const Text(
-              WorkoutsConstants.dialogContent,
+              GeneralConstants.dialogCloseWithoutSavingContent,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: Text(
-                  WorkoutsConstants.dialogGoBack,
+                  GeneralConstants.dialogGoBack,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                   ),
@@ -49,7 +49,7 @@ class _EditHistoryScreenState extends State<EditHistoryScreen> {
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 child: Text(
-                  WorkoutsConstants.dialogDontSave,
+                  GeneralConstants.dialogDontSave,
                   style: TextStyle(
                     color: Theme.of(context).errorColor,
                   ),
@@ -87,7 +87,7 @@ class _EditHistoryScreenState extends State<EditHistoryScreen> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                WorkoutsConstants.dialogGoBack,
+                GeneralConstants.dialogGoBack,
                 style: TextStyle(
                   color: Theme.of(context).primaryColor,
                 ),
@@ -403,7 +403,7 @@ class _EditHistoryScreenState extends State<EditHistoryScreen> {
                   children: [
                     Expanded(
                       child: MainButton(
-                        text: WorkoutsConstants.save,
+                        text: GeneralConstants.save,
                         onPressed: _onPressSaveButton,
                       ),
                     ),
