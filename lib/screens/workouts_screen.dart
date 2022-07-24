@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
@@ -14,7 +15,14 @@ import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/workout_card.dart';
 
 class WorkoutsScreen extends StatefulWidget {
-  const WorkoutsScreen({Key? key}) : super(key: key);
+  final void Function(
+    String workoutName,
+    int duration,
+    String date,
+    List<TrainingResult> trainingResults,
+  ) addHistory;
+
+  const WorkoutsScreen({Key? key, required this.addHistory}) : super(key: key);
 
   @override
   State<WorkoutsScreen> createState() => _WorkoutsScreenState();
@@ -191,6 +199,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                                     training,
                                   ),
                                   deleteWorkout: () => _deleteWorkout(index),
+                                  addHistory: widget.addHistory,
                                 ),
                               );
                             },

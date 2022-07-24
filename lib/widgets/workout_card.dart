@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/create_workout_screen.dart';
 import 'package:mygymbro/screens/start_workout_screen.dart';
@@ -12,12 +13,19 @@ class WorkoutCard extends StatefulWidget {
   final Workout workout;
   final void Function(String name, List<Training> trainings) editWorkout;
   final void Function() deleteWorkout;
+  final void Function(
+    String workoutName,
+    int duration,
+    String date,
+    List<TrainingResult> trainingResults,
+  ) addHistory;
 
   const WorkoutCard({
     Key? key,
     required this.workout,
     required this.editWorkout,
     required this.deleteWorkout,
+    required this.addHistory,
   }) : super(key: key);
 
   @override
@@ -105,6 +113,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                   builder: (context) => StartWorkoutScreen(
                     workoutName: widget.workout.name,
                     trainings: widget.workout.trainings,
+                    addHistory: widget.addHistory,
                   ),
                   fullscreenDialog: true,
                 ),
