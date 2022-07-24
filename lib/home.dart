@@ -34,6 +34,8 @@ class _HomeState extends State<Home> {
             .map(
               (snapshot) => History.fromJson(transformSnapshot(snapshot.value)),
             )
+            .toList()
+            .reversed
             .toList();
       });
     }
@@ -59,7 +61,7 @@ class _HomeState extends State<Home> {
     });
     // add history to state
     setState(() {
-      _history.add(history);
+      _history.insert(0, history);
     });
   }
 
