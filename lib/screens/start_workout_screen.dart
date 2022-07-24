@@ -14,7 +14,7 @@ class StartWorkoutScreen extends StatefulWidget {
   final List<Training> trainings;
   final void Function(
     String workoutName,
-    int duration,
+    String duration,
     String date,
     List<Training> trainings,
     List<TrainingResult> trainingResults,
@@ -120,14 +120,12 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
               onPressed: () {
                 widget.addHistory(
                   widget.workoutName,
-                  int.parse(
-                    StopWatchTimer.getDisplayTime(
-                      _stopWatchTimer.rawTime.value,
-                      hours: false,
-                      minute: false,
-                      second: true,
-                      milliSecond: false,
-                    ),
+                  StopWatchTimer.getDisplayTime(
+                    _stopWatchTimer.rawTime.value,
+                    hours: true,
+                    minute: true,
+                    second: true,
+                    milliSecond: false,
                   ),
                   formatDate(DateTime.now()),
                   widget.trainings,
@@ -185,7 +183,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                 final value = snap.data!;
                 final displayTime = StopWatchTimer.getDisplayTime(
                   value,
-                  hours: false,
+                  hours: true,
                   minute: true,
                   second: true,
                   milliSecond: false,

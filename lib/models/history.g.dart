@@ -9,7 +9,7 @@ part of 'history.dart';
 History _$HistoryFromJson(Map<String, dynamic> json) => History(
       json['id'] as String,
       json['workoutName'] as String,
-      json['duration'] as int,
+      json['duration'] as String,
       json['date'] as String,
       (json['trainings'] as List<dynamic>)
           .map((e) => Training.fromJson(e as Map<String, dynamic>))

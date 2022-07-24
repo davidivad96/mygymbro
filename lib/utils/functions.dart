@@ -8,14 +8,16 @@ Map<String, dynamic> transformSnapshot(Object? snapshot) =>
 String formatDate(DateTime? date) =>
     date == null ? "" : DateFormat("EEEE MMM d - hh:mm a").format(date);
 
-String formatDuration(int duration) {
-  if (duration >= 3600) {
-    return "${(duration / 3600).floor()}h ${(duration % 3600) ~/ 60}m ${duration % 60}s";
-  } else if (duration >= 60) {
-    return "${(duration ~/ 60).floor()}m ${duration % 60}s";
-  } else {
-    return "${duration}s";
-  }
+String formatDuration(String duration) {
+  final List<String> parts = duration.split(":");
+  final int hours = int.parse(parts[0]);
+  final int minutes = int.parse(parts[1]);
+  final int seconds = int.parse(parts[2]);
+  final int totalSeconds = hours * 3600 + minutes * 60 + seconds;
+  final int hoursPart = totalSeconds ~/ 3600;
+  final int minutesPart = (totalSeconds - hoursPart * 3600) ~/ 60;
+  final int secondsPart = totalSeconds - hoursPart * 3600 - minutesPart * 60;
+  return "${hoursPart != 0 ? "${hoursPart.toString()}hr " : ""}${minutesPart != 0 ? "${minutesPart.toString().padLeft(2)}min " : ""}${secondsPart.toString()}sec";
 }
 
 Color getFillColor(BuildContext context, Set<MaterialState> states) {

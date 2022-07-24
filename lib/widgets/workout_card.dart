@@ -16,7 +16,7 @@ class WorkoutCard extends StatefulWidget {
   final void Function() onSelectDeleteWorkout;
   final void Function(
     String workoutName,
-    int duration,
+    String duration,
     String date,
     List<Training> trainings,
     List<TrainingResult> trainingResults,

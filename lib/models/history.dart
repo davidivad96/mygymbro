@@ -9,7 +9,7 @@ part 'history.g.dart';
 class History {
   final String id;
   final String workoutName;
-  final int duration;
+  final String duration;
   final String date;
   final List<Training> trainings;
   List<TrainingResult> trainingResults;

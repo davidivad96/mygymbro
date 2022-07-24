@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
 
   void _addHistory(
     String workoutName,
-    int duration,
+    String duration,
     String date,
     List<Training> trainings,
     List<TrainingResult> trainingResults,
