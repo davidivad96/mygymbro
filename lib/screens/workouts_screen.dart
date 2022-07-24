@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 
@@ -34,21 +33,22 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
   List<Workout> _workouts = [];
 
   void _addWorkout(String name, List<Training> trainings) async {
-    String id = const Uuid().v4();
+    DatabaseReference newWorkoutRef = _dbRef.push();
+    String id = newWorkoutRef.key!;
     // add workout to db
     Workout workout = Workout(
       id,
       name,
       trainings,
     );
-    _dbRef.child(_workouts.length.toString()).set(workout.toJson());
+    _dbRef.child(id).set(workout.toJson());
     // add workout to state
     setState(() {
       _workouts.insert(0, workout);
     });
   }
 
-  void _editWorkout(
+  void _onSelectEditWorkout(
     String id,
     int index,
     String name,
@@ -60,14 +60,14 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
       trainings,
     );
     // update workout in db
-    _dbRef.child(index.toString()).set(workout.toJson());
+    _dbRef.child(id).set(workout.toJson());
     // update workout in state
     setState(() {
-      _workouts[index] = workout;
+      _workouts[_workouts.indexWhere((workout) => workout.id == id)] = workout;
     });
   }
 
-  void _deleteWorkout(int index) async {
+  void _onSelectDeleteWorkout(String id) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -88,10 +88,10 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
           TextButton(
             onPressed: () {
               // delete workout from db
-              _dbRef.child(index.toString()).remove();
+              _dbRef.child(id).remove();
               // delete workout from state
               setState(() {
-                _workouts.removeAt(index);
+                _workouts.removeWhere((workout) => workout.id == id);
               });
               Navigator.pop(context);
             },
@@ -179,7 +179,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                         ),
                       )
                     : _workouts.isNotEmpty
-                        ? ReorderableListView.builder(
+                        ? ListView.builder(
                             padding: EdgeInsets.zero,
                             scrollDirection: Axis.vertical,
                             itemCount: _workouts.length,
@@ -192,34 +192,18 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                                 ),
                                 child: WorkoutCard(
                                   workout: workout,
-                                  editWorkout: (name, training) => _editWorkout(
+                                  onSelectEditWorkout: (name, training) =>
+                                      _onSelectEditWorkout(
                                     workout.id,
                                     index,
                                     name,
                                     training,
                                   ),
-                                  deleteWorkout: () => _deleteWorkout(index),
+                                  onSelectDeleteWorkout: () =>
+                                      _onSelectDeleteWorkout(workout.id),
                                   addHistory: widget.addHistory,
                                 ),
                               );
-                            },
-                            onReorder: (int oldIndex, int newIndex) {
-                              if (newIndex > oldIndex) {
-                                newIndex -= 1;
-                              }
-                              List<Workout> workouts = List.from(_workouts);
-                              Workout item = workouts.removeAt(oldIndex);
-                              workouts.insert(newIndex, item);
-                              // reorder workouts in db
-                              _dbRef.set(
-                                workouts
-                                    .map((workout) => workout.toJson())
-                                    .toList(),
-                              );
-                              // reorder workouts in state
-                              setState(() {
-                                _workouts = workouts;
-                              });
                             },
                           )
                         : Center(

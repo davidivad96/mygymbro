@@ -1,5 +1,7 @@
 class GeneralConstants {
-  static const String appName = 'MyGymBro';
+  static const appName = 'MyGymBro';
+  static const edit = "Edit";
+  static const delete = "Delete";
 }
 
 class WorkoutsConstants {
@@ -38,8 +40,6 @@ class WorkoutsConstants {
   static const addExercise = "Add an exercise";
   static const save = "Save";
   static const cancel = "Cancel";
-  static const edit = "Edit";
-  static const delete = "Delete";
   static const start = "Start";
   static const noExercisesText =
       "Get started by adding exercises to your workout routine";

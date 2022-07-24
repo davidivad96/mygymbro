@@ -8,10 +8,12 @@ import 'package:mygymbro/utils/functions.dart';
 
 class HistoryCard extends StatefulWidget {
   final History history;
+  final void Function() onSelectDeleteHistory;
 
   const HistoryCard({
     Key? key,
     required this.history,
+    required this.onSelectDeleteHistory,
   }) : super(key: key);
 
   @override
@@ -41,21 +43,23 @@ class _HistoryCardState extends State<HistoryCard> {
                 ),
                 PopupMenuButton(
                   onSelected: (value) {
-                    if (value == WorkoutsConstants.edit) {
-                    } else if (value == WorkoutsConstants.delete) {}
+                    if (value == GeneralConstants.edit) {
+                    } else if (value == GeneralConstants.delete) {
+                      widget.onSelectDeleteHistory();
+                    }
                   },
                   child: const Icon(Icons.more_horiz),
                   itemBuilder: (context) => [
                     const PopupMenuItem(
-                      value: WorkoutsConstants.edit,
+                      value: GeneralConstants.edit,
                       child: Text(
-                        WorkoutsConstants.edit,
+                        GeneralConstants.edit,
                       ),
                     ),
                     PopupMenuItem(
-                      value: WorkoutsConstants.delete,
+                      value: GeneralConstants.delete,
                       child: Text(
-                        WorkoutsConstants.delete,
+                        GeneralConstants.delete,
                         style: TextStyle(color: Theme.of(context).errorColor),
                       ),
                     ),

@@ -11,8 +11,9 @@ import 'package:mygymbro/widgets/main_button.dart';
 
 class WorkoutCard extends StatefulWidget {
   final Workout workout;
-  final void Function(String name, List<Training> trainings) editWorkout;
-  final void Function() deleteWorkout;
+  final void Function(String name, List<Training> trainings)
+      onSelectEditWorkout;
+  final void Function() onSelectDeleteWorkout;
   final void Function(
     String workoutName,
     int duration,
@@ -23,8 +24,8 @@ class WorkoutCard extends StatefulWidget {
   const WorkoutCard({
     Key? key,
     required this.workout,
-    required this.editWorkout,
-    required this.deleteWorkout,
+    required this.onSelectEditWorkout,
+    required this.onSelectDeleteWorkout,
     required this.addHistory,
   }) : super(key: key);
 
@@ -55,32 +56,32 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 ),
                 PopupMenuButton(
                   onSelected: (value) {
-                    if (value == WorkoutsConstants.edit) {
+                    if (value == GeneralConstants.edit) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CreateWorkoutScreen(
                             workout: widget.workout,
-                            editWorkout: widget.editWorkout,
+                            editWorkout: widget.onSelectEditWorkout,
                           ),
                         ),
                       );
-                    } else if (value == WorkoutsConstants.delete) {
-                      widget.deleteWorkout();
+                    } else if (value == GeneralConstants.delete) {
+                      widget.onSelectDeleteWorkout();
                     }
                   },
                   child: const Icon(Icons.more_horiz),
                   itemBuilder: (context) => [
                     const PopupMenuItem(
-                      value: WorkoutsConstants.edit,
+                      value: GeneralConstants.edit,
                       child: Text(
-                        WorkoutsConstants.edit,
+                        GeneralConstants.edit,
                       ),
                     ),
                     PopupMenuItem(
-                      value: WorkoutsConstants.delete,
+                      value: GeneralConstants.delete,
                       child: Text(
-                        WorkoutsConstants.delete,
+                        GeneralConstants.delete,
                         style: TextStyle(color: Theme.of(context).errorColor),
                       ),
                     ),

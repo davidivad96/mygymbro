@@ -8,14 +8,54 @@ import 'package:mygymbro/widgets/history_card.dart';
 
 class HistoryScreen extends StatefulWidget {
   final List<History> history;
+  final void Function(String id) removeHistory;
 
-  const HistoryScreen({Key? key, required this.history}) : super(key: key);
+  const HistoryScreen({
+    Key? key,
+    required this.history,
+    required this.removeHistory,
+  }) : super(key: key);
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  void _onSelectDeleteHistory(String id) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(WorkoutsConstants.dialogDeleteWorkoutTitle),
+        content: const Text(
+          WorkoutsConstants.dialogDeleteWorkoutContent,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              WorkoutsConstants.dialogNo,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              widget.removeHistory(id);
+              Navigator.pop(context);
+            },
+            child: Text(
+              WorkoutsConstants.dialogYes,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -51,6 +91,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         child: HistoryCard(
                           history: history,
+                          onSelectDeleteHistory: () =>
+                              _onSelectDeleteHistory(history.id),
                         ),
                       );
                     },

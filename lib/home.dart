@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mygymbro/models/training_result.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 
@@ -47,7 +46,8 @@ class _HomeState extends State<Home> {
     String date,
     List<TrainingResult> trainingResults,
   ) async {
-    String id = const Uuid().v4();
+    DatabaseReference newHistoryRef = _dbRef.push();
+    String id = newHistoryRef.key!;
     // add history to db
     final history = History(
       id,
@@ -56,12 +56,19 @@ class _HomeState extends State<Home> {
       date,
       trainingResults,
     );
-    _dbRef.get().then((snapshot) {
-      _dbRef.child(snapshot.children.length.toString()).set(history.toJson());
-    });
+    _dbRef.child(id).set(history.toJson());
     // add history to state
     setState(() {
       _history.insert(0, history);
+    });
+  }
+
+  void _removeHistory(String id) {
+    // delete workout from db
+    _dbRef.child(id).remove();
+    // delete workout from state
+    setState(() {
+      _history.removeWhere((history) => history.id == id);
     });
   }
 
@@ -87,7 +94,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       WorkoutsScreen(addHistory: _addHistory),
-      HistoryScreen(history: _history),
+      HistoryScreen(history: _history, removeHistory: _removeHistory),
       const ExercisesScreen(),
       const GraphsScreen(),
     ];

@@ -44,16 +44,16 @@ class _TrainingCardState extends State<TrainingCard> {
                   ),
                   PopupMenuButton(
                     onSelected: (value) {
-                      if (value == WorkoutsConstants.delete) {
+                      if (value == GeneralConstants.delete) {
                         widget.deleteTraining();
                       }
                     },
                     child: const Icon(Icons.more_horiz),
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                        value: WorkoutsConstants.delete,
+                        value: GeneralConstants.delete,
                         child: Text(
-                          WorkoutsConstants.delete,
+                          GeneralConstants.delete,
                           style: TextStyle(color: Theme.of(context).errorColor),
                         ),
                       ),
