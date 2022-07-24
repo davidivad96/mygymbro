@@ -32,8 +32,9 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
       widget.trainings[i].exercise,
       List.generate(
         widget.trainings[i].numSets,
-        (_) => TrainingSet(),
+        (_) => TrainingSet(null, null),
       ),
+      "",
     ),
   );
 
@@ -49,7 +50,8 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
 
   bool _isCheckboxDisabled(int i, int j) {
     return _trainingResults[i].sets[j].kgs == null ||
-        _trainingResults[i].sets[j].reps == null;
+        _trainingResults[i].sets[j].reps == null ||
+        (j == 0 ? false : _trainingResults[i].sets[j - 1].done == false);
   }
 
   void _saveTraining() {}
@@ -207,18 +209,15 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
       body: Container(
         color: Theme.of(context).backgroundColor,
         child: ListView.separated(
-          separatorBuilder: (context, index) => const Divider(
-            height: 5.0,
-            color: Colors.transparent,
-          ),
+          separatorBuilder: (context, index) => const Divider(height: 5.0),
           itemCount: widget.trainings.length,
           itemBuilder: (context, trainingIndex) {
             final training = widget.trainings[trainingIndex];
             final exercise = training.exercise;
             final numSets = training.numSets;
             final numReps = training.numReps;
-            var tableRows = <TableRow>[];
-            for (var setIndex = 0; setIndex < numSets; setIndex++) {
+            final tableRows = <TableRow>[];
+            for (int setIndex = 0; setIndex < numSets; setIndex++) {
               tableRows.add(
                 TableRow(
                   children: [
@@ -309,6 +308,18 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                                   _trainingResults[trainingIndex]
                                       .sets[setIndex]
                                       .done = value!;
+                                  if (value == false) {
+                                    for (int i = setIndex;
+                                        i <
+                                            _trainingResults[trainingIndex]
+                                                .sets
+                                                .length;
+                                        i++) {
+                                      _trainingResults[trainingIndex]
+                                          .sets[i]
+                                          .done = false;
+                                    }
+                                  }
                                 });
                               },
                       ),

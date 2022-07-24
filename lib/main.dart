@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: Colors.grey[200],
         errorColor: const Color(0xFFEF3054),
         fontFamily: "Poppins",
+        dividerColor: Colors.transparent,
       ),
       home: const Home(),
     );

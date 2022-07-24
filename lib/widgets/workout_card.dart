@@ -32,54 +32,59 @@ class _WorkoutCardState extends State<WorkoutCard> {
         padding: EdgeInsets.all(Dimensions.cardPadding),
         child: Column(
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: PopupMenuButton(
-                onSelected: (value) {
-                  if (value == WorkoutsConstants.edit) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CreateWorkoutScreen(
-                          workout: widget.workout,
-                          editWorkout: widget.editWorkout,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Flexible(
+                  child: Text(
+                    widget.workout.name,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                PopupMenuButton(
+                  onSelected: (value) {
+                    if (value == WorkoutsConstants.edit) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateWorkoutScreen(
+                            workout: widget.workout,
+                            editWorkout: widget.editWorkout,
+                          ),
                         ),
+                      );
+                    } else if (value == WorkoutsConstants.delete) {
+                      widget.deleteWorkout();
+                    }
+                  },
+                  child: const Icon(Icons.more_horiz),
+                  itemBuilder: (context) => [
+                    const PopupMenuItem(
+                      value: WorkoutsConstants.edit,
+                      child: Text(
+                        WorkoutsConstants.edit,
                       ),
-                    );
-                  } else if (value == WorkoutsConstants.delete) {
-                    widget.deleteWorkout();
-                  }
-                },
-                child: const Icon(Icons.more_horiz),
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    value: WorkoutsConstants.edit,
-                    child: Text(
-                      WorkoutsConstants.edit,
                     ),
-                  ),
-                  PopupMenuItem(
-                    value: WorkoutsConstants.delete,
-                    child: Text(
-                      WorkoutsConstants.delete,
-                      style: TextStyle(color: Theme.of(context).errorColor),
+                    PopupMenuItem(
+                      value: WorkoutsConstants.delete,
+                      child: Text(
+                        WorkoutsConstants.delete,
+                        style: TextStyle(color: Theme.of(context).errorColor),
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
+            const SizedBox(height: 15.0),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  widget.workout.name,
-                  style: const TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 10.0),
                 Text(
                   widget.workout.trainings
                       .map((training) => training.exercise.name)
@@ -91,7 +96,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 ),
               ],
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 15.0),
             MainButton(
               text: WorkoutsConstants.start,
               onPressed: () => Navigator.push(
