@@ -18,6 +18,7 @@ class WorkoutsScreen extends StatefulWidget {
     String workoutName,
     int duration,
     String date,
+    List<Training> trainings,
     List<TrainingResult> trainingResults,
   ) addHistory;
 

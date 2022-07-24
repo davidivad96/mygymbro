@@ -16,6 +16,7 @@ class StartWorkoutScreen extends StatefulWidget {
     String workoutName,
     int duration,
     String date,
+    List<Training> trainings,
     List<TrainingResult> trainingResults,
   ) addHistory;
 
@@ -45,16 +46,6 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
       "",
     ),
   );
-
-  Color _getFillColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
-      return Colors.grey.withOpacity(0.3);
-    }
-    if (states.contains(MaterialState.selected)) {
-      return Theme.of(context).primaryColor;
-    }
-    return Colors.grey;
-  }
 
   bool _isCheckboxDisabled(int i, int j) {
     return _trainingResults[i].sets[j].kgs == null ||
@@ -139,6 +130,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                     ),
                   ),
                   formatDate(DateTime.now()),
+                  widget.trainings,
                   _trainingResults,
                 );
                 Navigator.popUntil(
@@ -198,19 +190,15 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                   second: true,
                   milliSecond: false,
                 );
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(
-                        displayTime,
-                        style: const TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    displayTime,
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
                     ),
-                  ],
+                  ),
                 );
               },
             ),
@@ -316,8 +304,12 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        fillColor:
-                            MaterialStateProperty.resolveWith(_getFillColor),
+                        fillColor: MaterialStateProperty.resolveWith(
+                          (Set<MaterialState> state) => getFillColor(
+                            context,
+                            state,
+                          ),
+                        ),
                         value:
                             _trainingResults[trainingIndex].sets[setIndex].done,
                         onChanged: _isCheckboxDisabled(trainingIndex, setIndex)

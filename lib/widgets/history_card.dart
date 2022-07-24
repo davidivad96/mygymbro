@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/history.dart';
+import 'package:mygymbro/screens/edit_history_screen.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/utils/functions.dart';
 
 class HistoryCard extends StatefulWidget {
   final History history;
+  final void Function() onSelectEditHistory;
   final void Function() onSelectDeleteHistory;
 
   const HistoryCard({
     Key? key,
     required this.history,
+    required this.onSelectEditHistory,
     required this.onSelectDeleteHistory,
   }) : super(key: key);
 
@@ -44,6 +47,15 @@ class _HistoryCardState extends State<HistoryCard> {
                 PopupMenuButton(
                   onSelected: (value) {
                     if (value == GeneralConstants.edit) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditHistoryScreen(
+                            history: widget.history,
+                            editHistory: widget.onSelectEditHistory,
+                          ),
+                        ),
+                      );
                     } else if (value == GeneralConstants.delete) {
                       widget.onSelectDeleteHistory();
                     }

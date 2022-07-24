@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mygymbro/models/training_result.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:mygymbro/models/history.dart';
+import 'package:mygymbro/models/training.dart';
+import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/screens/exercises_screen.dart';
 import 'package:mygymbro/screens/history_screen.dart';
 import 'package:mygymbro/screens/graphs_screen.dart';
@@ -44,6 +45,7 @@ class _HomeState extends State<Home> {
     String workoutName,
     int duration,
     String date,
+    List<Training> trainings,
     List<TrainingResult> trainingResults,
   ) async {
     DatabaseReference newHistoryRef = _dbRef.push();
@@ -54,12 +56,30 @@ class _HomeState extends State<Home> {
       workoutName,
       duration,
       date,
+      trainings,
       trainingResults,
     );
     _dbRef.child(id).set(history.toJson());
     // add history to state
     setState(() {
       _history.insert(0, history);
+    });
+  }
+
+  void _updateHistory(
+    String id,
+    List<TrainingResult> trainingResults,
+  ) async {
+    // update history in db
+    _dbRef.child(id).update({
+      "trainingResults": trainingResults
+          .map((trainingResult) => trainingResult.toJson())
+          .toList()
+    });
+    // update history in state
+    setState(() {
+      _history[_history.indexWhere((history) => history.id == id)]
+          .trainingResults = trainingResults;
     });
   }
 
@@ -94,7 +114,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       WorkoutsScreen(addHistory: _addHistory),
-      HistoryScreen(history: _history, removeHistory: _removeHistory),
+      HistoryScreen(
+        history: _history,
+        updateHistory: _updateHistory,
+        removeHistory: _removeHistory,
+      ),
       const ExercisesScreen(),
       const GraphsScreen(),
     ];

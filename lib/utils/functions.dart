@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 Map<String, dynamic> transformSnapshot(Object? snapshot) =>
@@ -15,4 +16,14 @@ String formatDuration(int duration) {
   } else {
     return "${duration}s";
   }
+}
+
+Color getFillColor(BuildContext context, Set<MaterialState> states) {
+  if (states.contains(MaterialState.disabled)) {
+    return Colors.grey.withOpacity(0.3);
+  }
+  if (states.contains(MaterialState.selected)) {
+    return Theme.of(context).primaryColor;
+  }
+  return Colors.grey;
 }

@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/history.dart';
+import 'package:mygymbro/models/training_result.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 import 'package:mygymbro/widgets/history_card.dart';
 
 class HistoryScreen extends StatefulWidget {
   final List<History> history;
+  final void Function(
+    String id,
+    List<TrainingResult> trainingResults,
+  ) updateHistory;
   final void Function(String id) removeHistory;
 
   const HistoryScreen({
     Key? key,
     required this.history,
+    required this.updateHistory,
     required this.removeHistory,
   }) : super(key: key);
 
@@ -21,6 +27,16 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  void _onSelectEditHistory(
+    String id,
+    List<TrainingResult> trainingResults,
+  ) {
+    widget.updateHistory(
+      id,
+      trainingResults,
+    );
+  }
+
   void _onSelectDeleteHistory(String id) async {
     await showDialog(
       context: context,
@@ -91,6 +107,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         ),
                         child: HistoryCard(
                           history: history,
+                          onSelectEditHistory: () => _onSelectEditHistory(
+                            history.id,
+                            history.trainingResults,
+                          ),
                           onSelectDeleteHistory: () =>
                               _onSelectDeleteHistory(history.id),
                         ),
