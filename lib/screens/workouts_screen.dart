@@ -45,7 +45,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     _dbRef.child(id).set(workout.toJson());
     // add workout to state
     setState(() {
-      _workouts.insert(0, workout);
+      _workouts.add(workout);
     });
   }
 
