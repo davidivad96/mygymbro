@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_database/firebase_database.dart';
 
@@ -47,6 +48,17 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     setState(() {
       _workouts.add(workout);
     });
+    // add workout id to preferences workoutsSortedIds:
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> sortedIds = prefs.getStringList(
+          GeneralConstants.prefsWorkoutsSortedIds,
+        ) ??
+        [];
+    sortedIds.add(id);
+    prefs.setStringList(
+      GeneralConstants.prefsWorkoutsSortedIds,
+      sortedIds,
+    );
   }
 
   void _onSelectEditWorkout(
@@ -94,6 +106,19 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
               setState(() {
                 _workouts.removeWhere((workout) => workout.id == id);
               });
+              // delete workout id from preferences workoutsSortedIds:
+              SharedPreferences.getInstance().then(
+                (prefs) {
+                  List<String> sortedIds = prefs.getStringList(
+                    GeneralConstants.prefsWorkoutsSortedIds,
+                  )!;
+                  sortedIds.remove(id);
+                  prefs.setStringList(
+                    GeneralConstants.prefsWorkoutsSortedIds,
+                    sortedIds,
+                  );
+                },
+              );
               Navigator.pop(context);
             },
             child: Text(
@@ -114,13 +139,26 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     });
     final snapshot = await _dbRef.get();
     if (snapshot.exists) {
-      final workouts = snapshot.children;
+      final workouts = snapshot.children
+          .map(
+            (snapshot) => Workout.fromJson(transformSnapshot(snapshot.value)),
+          )
+          .toList();
+      // sort workouts by preferences workoutsSortedIds
+      final prefs = await SharedPreferences.getInstance();
+      List<String> sortedIds =
+          prefs.getStringList(GeneralConstants.prefsWorkoutsSortedIds) ?? [];
+      if (sortedIds.isEmpty) {
+        sortedIds = workouts.map((workout) => workout.id).toList();
+        await prefs.setStringList(
+          GeneralConstants.prefsWorkoutsSortedIds,
+          sortedIds,
+        );
+      }
+      workouts
+          .sort((a, b) => sortedIds.indexOf(a.id) - sortedIds.indexOf(b.id));
       setState(() {
-        _workouts = workouts
-            .map(
-              (snapshot) => Workout.fromJson(transformSnapshot(snapshot.value)),
-            )
-            .toList();
+        _workouts = workouts;
       });
     }
     Future.delayed(
@@ -180,7 +218,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                         ),
                       )
                     : _workouts.isNotEmpty
-                        ? ListView.builder(
+                        ? ReorderableListView.builder(
                             padding: EdgeInsets.zero,
                             scrollDirection: Axis.vertical,
                             itemCount: _workouts.length,
@@ -205,6 +243,26 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                                   addHistory: widget.addHistory,
                                 ),
                               );
+                            },
+                            onReorder: (int oldIndex, int newIndex) async {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              if (oldIndex < newIndex) {
+                                newIndex -= 1;
+                              }
+                              setState(() {
+                                final workout = _workouts.removeAt(oldIndex);
+                                _workouts.insert(newIndex, workout);
+                                final sortedIds = prefs.getStringList(
+                                  GeneralConstants.prefsWorkoutsSortedIds,
+                                )!;
+                                sortedIds.removeAt(oldIndex);
+                                sortedIds.insert(newIndex, workout.id);
+                                prefs.setStringList(
+                                  GeneralConstants.prefsWorkoutsSortedIds,
+                                  sortedIds,
+                                );
+                              });
                             },
                           )
                         : Center(

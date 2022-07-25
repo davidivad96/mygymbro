@@ -28,15 +28,15 @@ class _HomeState extends State<Home> {
   void _initHistory() async {
     final snapshot = await _dbRef.get();
     if (snapshot.exists) {
-      final history = snapshot.children;
+      final history = snapshot.children
+          .map(
+            (snapshot) => History.fromJson(transformSnapshot(snapshot.value)),
+          )
+          .toList()
+          .reversed
+          .toList();
       setState(() {
-        _history = history
-            .map(
-              (snapshot) => History.fromJson(transformSnapshot(snapshot.value)),
-            )
-            .toList()
-            .reversed
-            .toList();
+        _history = history;
       });
     }
   }

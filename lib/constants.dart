@@ -14,6 +14,7 @@ class GeneralConstants {
   static const dialogDiscard = "Discard";
   static const dialogFinished = "Yes, I'm finished!";
   static const dialogGoBack = "Go back";
+  static const prefsWorkoutsSortedIds = "workoutsSortedIds";
 }
 
 class WorkoutsConstants {
