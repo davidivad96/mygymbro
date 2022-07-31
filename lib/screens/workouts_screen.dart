@@ -162,7 +162,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
       });
     }
     Future.delayed(
-      const Duration(milliseconds: 1000),
+      const Duration(milliseconds: 1500),
       () => setState(() {
         _isLoading = false;
       }),

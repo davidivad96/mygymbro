@@ -4,11 +4,12 @@ part 'exercise.g.dart';
 
 @JsonSerializable()
 class Exercise {
+  final int id;
   final String name;
   final String description;
   final String targetArea;
 
-  Exercise(this.name, this.description, this.targetArea);
+  Exercise(this.id, this.name, this.description, this.targetArea);
 
   factory Exercise.fromJson(Map<String, dynamic> json) =>
       _$ExerciseFromJson(json);
