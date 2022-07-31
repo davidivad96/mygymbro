@@ -4,7 +4,7 @@ part 'exercise.g.dart';
 
 @JsonSerializable()
 class Exercise {
-  final int id;
+  final String id;
   final String name;
   final String description;
   final String targetArea;

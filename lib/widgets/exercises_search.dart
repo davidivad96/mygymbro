@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_database/firebase_database.dart';
+
 import 'package:mygymbro/constants.dart';
-import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/exercise.dart';
 import 'package:mygymbro/utils/dimensions.dart';
+import 'package:mygymbro/utils/functions.dart';
 import 'package:mygymbro/widgets/main_button.dart';
 import 'package:mygymbro/widgets/secondary_button.dart';
 
@@ -18,6 +20,7 @@ class ExercisesSearch extends StatefulWidget {
 }
 
 class _ExercisesSearchState extends State<ExercisesSearch> {
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref("exercises");
   final TextEditingController _controller = TextEditingController();
   late List<Exercise> _exerciseList = [];
   late List<Exercise> _filteredExerciseList = [];
@@ -70,14 +73,26 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
     );
   }
 
+  void _initExercises() async {
+    final snapshot = await _dbRef.get();
+    if (snapshot.exists) {
+      final exercises = snapshot.children
+          .map(
+            (snapshot) => Exercise.fromJson(transformSnapshot(snapshot.value)),
+          )
+          .toList();
+      setState(() {
+        _exerciseList = exercises;
+        _exerciseList.sort((a, b) => a.name.compareTo(b.name));
+        _finalExerciseList = _filteredExerciseList = _exerciseList;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _exerciseList = exercises;
-      _exerciseList.sort((a, b) => a.name.compareTo(b.name));
-      _finalExerciseList = _filteredExerciseList = _exerciseList;
-    });
+    _initExercises();
   }
 
   @override

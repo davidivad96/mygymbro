@@ -18,13 +18,13 @@ class StartWorkoutScreen extends StatefulWidget {
     String date,
     List<Training> trainings,
     List<TrainingResult> trainingResults,
-  ) addHistory;
+  ) finishWorkout;
 
   const StartWorkoutScreen({
     Key? key,
     required this.workoutName,
     required this.trainings,
-    required this.addHistory,
+    required this.finishWorkout,
   }) : super(key: key);
 
   @override
@@ -118,7 +118,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
           if (!noWorkDone)
             TextButton(
               onPressed: () {
-                widget.addHistory(
+                widget.finishWorkout(
                   widget.workoutName,
                   StopWatchTimer.getDisplayTime(
                     _stopWatchTimer.rawTime.value,

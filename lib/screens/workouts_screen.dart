@@ -21,9 +21,10 @@ class WorkoutsScreen extends StatefulWidget {
     String date,
     List<Training> trainings,
     List<TrainingResult> trainingResults,
-  ) addHistory;
+  ) finishWorkout;
 
-  const WorkoutsScreen({Key? key, required this.addHistory}) : super(key: key);
+  const WorkoutsScreen({Key? key, required this.finishWorkout})
+      : super(key: key);
 
   @override
   State<WorkoutsScreen> createState() => _WorkoutsScreenState();
@@ -133,7 +134,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
     );
   }
 
-  _initWorkouts() async {
+  void _initWorkouts() async {
     setState(() {
       _isLoading = true;
     });
@@ -240,7 +241,7 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
                                   ),
                                   onSelectDeleteWorkout: () =>
                                       _onSelectDeleteWorkout(workout.id),
-                                  addHistory: widget.addHistory,
+                                  finishWorkout: widget.finishWorkout,
                                 ),
                               );
                             },

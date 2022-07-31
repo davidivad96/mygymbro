@@ -3,38 +3,24 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 
 import 'package:mygymbro/constants.dart';
-import 'package:mygymbro/data/exercises.dart';
 import 'package:mygymbro/models/graph.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 
-final now = DateTime.now();
-List<Graph> graphs = [
-  Graph(
-    exercises[7],
-    [
-      Data(DateTime(now.year, now.month, now.day - 40), 55.0),
-      Data(DateTime(now.year, now.month, now.day - 30), 60.0),
-      Data(DateTime(now.year, now.month, now.day - 20), 60.0),
-      Data(DateTime(now.year, now.month, now.day - 10), 65.0),
-      Data(DateTime(now.year, now.month, now.day), 75.0),
-    ],
-  ),
-  Graph(
-    exercises[61],
-    [
-      Data(DateTime(now.year, now.month, now.day - 2), 5.0),
-      Data(DateTime(now.year, now.month, now.day - 1), 7.5),
-      Data(DateTime(now.year, now.month, now.day), 10.0),
-    ],
-  ),
-];
+class GraphsScreen extends StatefulWidget {
+  final List<Graph> graphs;
 
-class GraphsScreen extends StatelessWidget {
-  const GraphsScreen({Key? key}) : super(key: key);
+  const GraphsScreen({Key? key, required this.graphs}) : super(key: key);
 
   @override
+  State<GraphsScreen> createState() => _GraphsScreenState();
+}
+
+class _GraphsScreenState extends State<GraphsScreen> {
+  @override
   Widget build(BuildContext context) {
+    List<Graph> graphs =
+        widget.graphs.where((graph) => graph.data.length > 1).toList();
     return Padding(
       padding: EdgeInsets.fromLTRB(
         Dimensions.screenPaddingHorizontal,

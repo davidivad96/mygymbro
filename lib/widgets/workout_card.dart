@@ -20,14 +20,14 @@ class WorkoutCard extends StatefulWidget {
     String date,
     List<Training> trainings,
     List<TrainingResult> trainingResults,
-  ) addHistory;
+  ) finishWorkout;
 
   const WorkoutCard({
     Key? key,
     required this.workout,
     required this.onSelectEditWorkout,
     required this.onSelectDeleteWorkout,
-    required this.addHistory,
+    required this.finishWorkout,
   }) : super(key: key);
 
   @override
@@ -115,7 +115,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                   builder: (context) => StartWorkoutScreen(
                     workoutName: widget.workout.name,
                     trainings: widget.workout.trainings,
-                    addHistory: widget.addHistory,
+                    finishWorkout: widget.finishWorkout,
                   ),
                   fullscreenDialog: true,
                 ),
