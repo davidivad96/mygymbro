@@ -5,15 +5,16 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:mygymbro/constants.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/training_result.dart';
+import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/utils/dimensions.dart';
 import 'package:mygymbro/utils/functions.dart';
 import 'package:mygymbro/widgets/big_text.dart';
 
 class StartWorkoutScreen extends StatefulWidget {
-  final String workoutName;
+  final Workout workout;
   final List<Training> trainings;
   final void Function(
-    String workoutName,
+    Workout workout,
     String duration,
     String date,
     List<Training> trainings,
@@ -22,7 +23,7 @@ class StartWorkoutScreen extends StatefulWidget {
 
   const StartWorkoutScreen({
     Key? key,
-    required this.workoutName,
+    required this.workout,
     required this.trainings,
     required this.finishWorkout,
   }) : super(key: key);
@@ -43,6 +44,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         widget.trainings[i].numSets,
         (_) => TrainingSet(null, null),
       ),
+      "",
       "",
     ),
   );
@@ -119,7 +121,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
             TextButton(
               onPressed: () {
                 widget.finishWorkout(
-                  widget.workoutName,
+                  widget.workout,
                   StopWatchTimer.getDisplayTime(
                     _stopWatchTimer.rawTime.value,
                     hours: true,
@@ -127,7 +129,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                     second: true,
                     milliSecond: false,
                   ),
-                  formatDate(DateTime.now()),
+                  DateTime.now().toString(),
                   widget.trainings,
                   _trainingResults,
                 );
@@ -175,7 +177,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
         ),
         title: Column(
           children: [
-            BigText(text: widget.workoutName),
+            BigText(text: widget.workout.name),
             StreamBuilder<int>(
               stream: _stopWatchTimer.rawTime,
               initialData: _stopWatchTimer.rawTime.value,

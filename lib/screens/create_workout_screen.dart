@@ -279,7 +279,9 @@ class _CreateWorkoutScreenState extends State<CreateWorkoutScreen> {
                             itemCount: _trainings.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                key: Key(_trainings[index].exercise.name),
+                                key: Key(
+                                  "${_trainings[index].exercise.id}-$index",
+                                ),
                                 constraints: BoxConstraints(
                                   minHeight: Dimensions.cardMinHeight,
                                 ),

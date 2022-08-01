@@ -13,6 +13,7 @@ class History {
   final String date;
   final List<Training> trainings;
   List<TrainingResult> trainingResults;
+  String workoutId;
 
   History(
     this.id,
@@ -21,6 +22,7 @@ class History {
     this.date,
     this.trainings,
     this.trainingResults,
+    this.workoutId,
   );
 
   factory History.fromJson(Map<String, dynamic> json) =>

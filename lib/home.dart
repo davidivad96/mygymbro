@@ -7,6 +7,7 @@ import 'package:mygymbro/models/graph.dart';
 import 'package:mygymbro/models/history.dart';
 import 'package:mygymbro/models/training.dart';
 import 'package:mygymbro/models/training_result.dart';
+import 'package:mygymbro/models/workout.dart';
 import 'package:mygymbro/screens/exercises_screen.dart';
 import 'package:mygymbro/screens/history_screen.dart';
 import 'package:mygymbro/screens/graphs_screen.dart';
@@ -26,12 +27,10 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final DatabaseReference _historyDbRef =
       FirebaseDatabase.instance.ref("history");
-  final DatabaseReference _graphsDbRef =
-      FirebaseDatabase.instance.ref("graphs");
   List<History> _history = [];
   List<Graph> _graphs = [];
 
-  void _initHistory() async {
+  Future<void> _initHistory() async {
     final snapshot = await _historyDbRef.get();
     if (snapshot.exists) {
       final history = snapshot.children
@@ -47,22 +46,45 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void _initGraphs() async {
-    final snapshot = await _graphsDbRef.get();
-    if (snapshot.exists) {
-      final graphs = snapshot.children
-          .map(
-            (snapshot) => Graph.fromJson(transformSnapshot(snapshot.value)),
-          )
-          .toList();
-      setState(() {
-        _graphs = graphs;
-      });
+  Future<void> _initGraphs() async {
+    List<Graph> graphs = [];
+    for (History history in _history) {
+      for (TrainingResult trainingResult in history.trainingResults) {
+        final validSets = trainingResult.sets.where((set) => set.done == true);
+        if (validSets.isNotEmpty) {
+          final x = DateTime.parse(history.date);
+          final y = validSets.map((set) => set.kgs!).reduce(max<double>);
+          Data data = Data(x, y, history.id);
+          int index = graphs.indexWhere(
+            (graph) => graph.exercise.id == trainingResult.exercise.id,
+          );
+          if (index == -1) {
+            graphs.add(
+              Graph(
+                trainingResult.exercise,
+                [data],
+              ),
+            );
+          } else if (graphs[index].data.last.historyId == history.id) {
+            graphs[index].data.last.y = max(graphs[index].data.last.y!, y);
+          } else {
+            graphs[index].data.add(data);
+          }
+        }
+      }
     }
+    setState(() {
+      _graphs = graphs;
+    });
+  }
+
+  void _init() async {
+    await _initHistory();
+    await _initGraphs();
   }
 
   void _finishWorkout(
-    String workoutName,
+    Workout workout,
     String duration,
     String date,
     List<Training> trainings,
@@ -73,50 +95,22 @@ class _HomeState extends State<Home> {
     // add history to db
     final history = History(
       id,
-      workoutName,
+      workout.name,
       duration,
       date,
       trainings,
-      trainingResults,
+      trainingResults.map((trainingResult) {
+        trainingResult.historyId = id;
+        return trainingResult;
+      }).toList(),
+      workout.id,
     );
     _historyDbRef.child(id).set(history.toJson());
     // add history to state
     setState(() {
       _history.insert(0, history);
     });
-    // update/create graphs
-    for (TrainingResult trainingResult in trainingResults) {
-      final validSets = trainingResult.sets.where((set) => set.done == true);
-      if (validSets.isNotEmpty) {
-        final exercise = trainingResult.exercise;
-        final x = DateTime.now().toString();
-        final y = validSets.map((set) => set.kgs!).reduce(max<double>);
-        final snapshot = await _graphsDbRef.child(exercise.id.toString()).get();
-        if (snapshot.exists) {
-          // update graph in db
-          final graph = Graph.fromJson(transformSnapshot(snapshot.value));
-          graph.data.add(Data(DateTime.parse(x), y));
-          _graphsDbRef.child(exercise.id.toString()).set(graph.toJson());
-          // update graph in state
-          setState(() {
-            _graphs[_graphs.indexWhere(
-              (graph) => graph.exercise.id == exercise.id,
-            )] = graph;
-          });
-        } else {
-          // create graph in db
-          final graph = Graph(
-            exercise,
-            [Data(DateTime.parse(x), y)],
-          );
-          _graphsDbRef.child(exercise.id.toString()).set(graph.toJson());
-          // create graph in state
-          setState(() {
-            _graphs.add(graph);
-          });
-        }
-      }
-    }
+    await _initGraphs();
   }
 
   void _updateHistory(
@@ -127,22 +121,24 @@ class _HomeState extends State<Home> {
     _historyDbRef.child(id).update({
       "trainingResults": trainingResults
           .map((trainingResult) => trainingResult.toJson())
-          .toList()
+          .toList(),
     });
     // update history in state
     setState(() {
       _history[_history.indexWhere((history) => history.id == id)]
           .trainingResults = trainingResults;
     });
+    await _initGraphs();
   }
 
-  void _removeHistory(String id) {
+  void _removeHistory(String id) async {
     // delete workout from db
     _historyDbRef.child(id).remove();
     // delete workout from state
     setState(() {
       _history.removeWhere((history) => history.id == id);
     });
+    await _initGraphs();
   }
 
   void _changePage(int? index) {
@@ -154,8 +150,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _initHistory();
-    _initGraphs();
+    _init();
   }
 
   @override

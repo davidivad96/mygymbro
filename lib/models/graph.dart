@@ -7,9 +7,10 @@ part 'graph.g.dart';
 @JsonSerializable()
 class Data {
   final DateTime x;
-  final double? y;
+  double? y;
+  final String historyId;
 
-  Data(this.x, this.y);
+  Data(this.x, this.y, this.historyId);
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
   Map<String, dynamic> toJson() => _$DataToJson(this);

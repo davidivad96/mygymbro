@@ -15,7 +15,7 @@ class WorkoutCard extends StatefulWidget {
       onSelectEditWorkout;
   final void Function() onSelectDeleteWorkout;
   final void Function(
-    String workoutName,
+    Workout workout,
     String duration,
     String date,
     List<Training> trainings,
@@ -113,7 +113,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => StartWorkoutScreen(
-                    workoutName: widget.workout.name,
+                    workout: widget.workout,
                     trainings: widget.workout.trainings,
                     finishWorkout: widget.finishWorkout,
                   ),

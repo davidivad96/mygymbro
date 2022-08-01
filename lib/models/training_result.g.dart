@@ -25,6 +25,7 @@ TrainingResult _$TrainingResultFromJson(Map<String, dynamic> json) =>
           .map((e) => TrainingSet.fromJson(e as Map<String, dynamic>))
           .toList(),
       json['notes'] as String,
+      json['historyId'] as String,
     );
 
 Map<String, dynamic> _$TrainingResultToJson(TrainingResult instance) =>
@@ -32,4 +33,5 @@ Map<String, dynamic> _$TrainingResultToJson(TrainingResult instance) =>
       'exercise': instance.exercise.toJson(),
       'sets': instance.sets.map((e) => e.toJson()).toList(),
       'notes': instance.notes,
+      'historyId': instance.historyId,
     };

@@ -82,7 +82,7 @@ class _HistoryCardState extends State<HistoryCard> {
             ExpansionTile(
               tilePadding: EdgeInsets.zero,
               title: Text(
-                widget.history.date,
+                formatDate(DateTime.parse(widget.history.date)),
                 style: TextStyle(
                   fontSize: 12.0,
                   color: Colors.grey[500],

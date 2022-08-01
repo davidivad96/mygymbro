@@ -23,8 +23,9 @@ class TrainingResult {
   final Exercise exercise;
   final List<TrainingSet> sets;
   String notes;
+  String historyId;
 
-  TrainingResult(this.exercise, this.sets, this.notes);
+  TrainingResult(this.exercise, this.sets, this.notes, this.historyId);
 
   factory TrainingResult.fromJson(Map<String, dynamic> json) =>
       _$TrainingResultFromJson(json);

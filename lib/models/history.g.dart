@@ -17,6 +17,7 @@ History _$HistoryFromJson(Map<String, dynamic> json) => History(
       (json['trainingResults'] as List<dynamic>)
           .map((e) => TrainingResult.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['workoutId'] as String,
     );
 
 Map<String, dynamic> _$HistoryToJson(History instance) => <String, dynamic>{
@@ -27,4 +28,5 @@ Map<String, dynamic> _$HistoryToJson(History instance) => <String, dynamic>{
       'trainings': instance.trainings.map((e) => e.toJson()).toList(),
       'trainingResults':
           instance.trainingResults.map((e) => e.toJson()).toList(),
+      'workoutId': instance.workoutId,
     };

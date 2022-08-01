@@ -9,11 +9,13 @@ part of 'graph.dart';
 Data _$DataFromJson(Map<String, dynamic> json) => Data(
       DateTime.parse(json['x'] as String),
       (json['y'] as num?)?.toDouble(),
+      json['historyId'] as String,
     );
 
 Map<String, dynamic> _$DataToJson(Data instance) => <String, dynamic>{
       'x': instance.x.toIso8601String(),
       'y': instance.y,
+      'historyId': instance.historyId,
     };
 
 Graph _$GraphFromJson(Map<String, dynamic> json) => Graph(

@@ -16,7 +16,7 @@ import 'package:mygymbro/widgets/workout_card.dart';
 
 class WorkoutsScreen extends StatefulWidget {
   final void Function(
-    String workoutName,
+    Workout workout,
     String duration,
     String date,
     List<Training> trainings,
