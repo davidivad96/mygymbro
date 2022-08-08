@@ -46,7 +46,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> _initGraphs() async {
+  Future<void> _updateGraphs() async {
     List<Graph> graphs = [];
     for (History history in _history) {
       for (TrainingResult trainingResult in history.trainingResults) {
@@ -80,7 +80,7 @@ class _HomeState extends State<Home> {
 
   void _init() async {
     await _initHistory();
-    await _initGraphs();
+    await _updateGraphs();
   }
 
   void _finishWorkout(
@@ -110,7 +110,7 @@ class _HomeState extends State<Home> {
     setState(() {
       _history.insert(0, history);
     });
-    await _initGraphs();
+    await _updateGraphs();
   }
 
   void _updateHistory(
@@ -128,7 +128,7 @@ class _HomeState extends State<Home> {
       _history[_history.indexWhere((history) => history.id == id)]
           .trainingResults = trainingResults;
     });
-    await _initGraphs();
+    await _updateGraphs();
   }
 
   void _removeHistory(String id) async {
@@ -138,7 +138,7 @@ class _HomeState extends State<Home> {
     setState(() {
       _history.removeWhere((history) => history.id == id);
     });
-    await _initGraphs();
+    await _updateGraphs();
   }
 
   void _changePage(int? index) {
