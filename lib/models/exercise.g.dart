@@ -11,6 +11,7 @@ Exercise _$ExerciseFromJson(Map<String, dynamic> json) => Exercise(
       json['name'] as String,
       json['description'] as String,
       json['targetArea'] as String,
+      $enumDecode(_$ExerciseTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$ExerciseToJson(Exercise instance) => <String, dynamic>{
@@ -18,4 +19,11 @@ Map<String, dynamic> _$ExerciseToJson(Exercise instance) => <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
       'targetArea': instance.targetArea,
+      'type': _$ExerciseTypeEnumMap[instance.type]!,
     };
+
+const _$ExerciseTypeEnumMap = {
+  ExerciseType.weight: 'weight',
+  ExerciseType.duration: 'duration',
+  ExerciseType.distance: 'distance',
+};
