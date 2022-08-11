@@ -161,6 +161,9 @@ class _WorkoutsScreenState extends State<WorkoutsScreen> {
       setState(() {
         _workouts = workouts;
       });
+    } else {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove(GeneralConstants.prefsWorkoutsSortedIds);
     }
     Future.delayed(
       const Duration(milliseconds: 1500),
