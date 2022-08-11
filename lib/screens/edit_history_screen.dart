@@ -332,7 +332,7 @@ class _EditHistoryScreenState extends State<EditHistoryScreen> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Column(
             children: [

@@ -240,6 +240,7 @@ class _ExercisesSearchState extends State<ExercisesSearch> {
                   ),
                 );
               },
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             ),
           ),
         ],

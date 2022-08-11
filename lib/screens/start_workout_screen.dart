@@ -363,7 +363,7 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   Widget build(BuildContext context) {
     final trainingCards = _buildTrainingCards();
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.close),
